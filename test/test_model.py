@@ -1,17 +1,17 @@
-import os, sys
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-
-from app.main.models import FullDatastream, Datastreams, Observations
+from ca_backend.models.model import FullDatastream, Datastreams, Observations
+from ca_backend.models.database import Database
 from pprint import pprint
 import requests
 import unittest
+import os
 
 
 
 class TestModel(unittest.TestCase):
     
     def setUp(self):
-        pass
+        mcs = os.getenv('MONGODB_CONNECTIONSTRING')
+        Database.initialize(mcs)
 
     def test_1_FullDatastream(self):
         ep = 'https://sta.ci.taiwan.gov.tw/STA_AirQuality_v2/v1.0/Datastreams'
@@ -22,8 +22,10 @@ class TestModel(unittest.TestCase):
             "$top": 3
         }
         r = requests.get(url=ep, params=pa).text
-        result = FullDatastream().loads(r)
+        result = FullDatastream().loads(r).data
         pprint(result)
+        status = Database.save_to_db(result)
+        pprint(status)
 
         assert result is not None
 
@@ -36,7 +38,7 @@ class TestModel(unittest.TestCase):
             "$top": 1
         }
         r = requests.get(url=ep, params=pa).text
-        result = Datastreams().loads(r)
+        result = Datastreams().loads(r).data
         pprint(result)
 
         assert result is not None
@@ -50,7 +52,7 @@ class TestModel(unittest.TestCase):
             "$top": 3
         }
         r = requests.get(url=ep, params=pa).text
-        result = Observations().loads(r)
+        result = Observations().loads(r).data
         pprint(result)
 
         assert result is not None

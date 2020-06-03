@@ -1,12 +1,10 @@
 from marshmallow import Schema, fields, pre_dump, pre_load, post_dump, post_load
-import toastedmarshmallow
-import requests
-
+# import toastedmarshmallow
 
 class Base(Schema):
 
     class Meta:
-        jit = toastedmarshmallow.Jit
+    #     jit = toastedmarshmallow.Jit
         pass
 
     Locations_iot_navigationLink = fields.URL()
@@ -25,8 +23,8 @@ class Base(Schema):
 
 
 class Location(Base):
-    class Meta:
-        unknown = True
+    # class Meta:
+        # unknown = True
     name = fields.Str(required=True)
     description = fields.Str(required=True)
     encodingType = fields.Str(required=True)
@@ -34,8 +32,8 @@ class Location(Base):
 
 
 class Observation(Base):
-    class Meta:
-        unknown = True
+    # class Meta:
+    #     unknown = True
     phenomenonTime = fields.DateTime()
     resultTime = fields.Str(allow_none=True)
     result = fields.Raw()
@@ -43,16 +41,16 @@ class Observation(Base):
 
 
 class Thing(Base):
-    class Meta:
-        unknown = True
+    # class Meta:
+    #     unknown = True
     name = fields.Str(required=True)
     description = fields.Str(required=True)
     properties = fields.Raw()
 
 
 class Datastream(Base):
-    class Meta:
-        unknown = True
+    # class Meta:
+    #     unknown = True
     name = fields.Str(required=True)
     description = fields.Str(required=True)
     observationType = fields.URL()
@@ -96,9 +94,8 @@ class LocationsInThing(Thing):
     locations = fields.List(fields.Nested(Locations))
 
 class ThingAndLocationInDatastream(Datastream):
-    # observations = fields.Nested(Observations, data_key='Observations', only=['value'])
-    observations = fields.List(fields.Nested(Observation), data_key='Observations')
-    thing = fields.Nested(LocationsInThing, data_key='Thing')
+    Observations = fields.List(fields.Nested(Observation), data_key='Observations')
+    Thing = fields.Nested(LocationsInThing, data_key='Thing')
 
 class FullDatastream(Schema):
     class Meta:
@@ -107,18 +104,3 @@ class FullDatastream(Schema):
     _iot_nextLink = fields.URL(data_key='@iot.nextLink')
     value = fields.List(fields.Nested(ThingAndLocationInDatastream))
     # items = fields.Nested(ThingAndLocationInDatastream, data_key='value')
-
-# ep = 'https://sta.ci.taiwan.gov.tw/STA_AirQuality_v2/v1.0/Datastreams'
-# pa = {
-#     "$expand": "Thing,Thing/Locations,Observations",
-#     "$filter": "st_equals(Thing/Locations/location,geography'POINT(121.7601 25.1292)')",
-#     "$count": "true",
-#     "$top": 3
-# }
-# r = requests.get(url=ep, params=pa).text
-# m = FullDatastream().loads(r)
-# print(m)
-
-# r = requests.get('https://sta.ci.taiwan.gov.tw/STA_AirQuality_v2/v1.0/Locations(1)/Things').text
-# a = Things().loads(r)
-# print(a)

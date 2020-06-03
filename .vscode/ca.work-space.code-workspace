@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"cloudcode.azureExplorerVisible": false,
+		"cloudcode.awsExplorerVisible": false
+	}
+}
