@@ -1,12 +1,13 @@
-from marshmallow import Schema, fields, pre_dump, pre_load, post_dump, post_load, INCLUDE, RAISE, EXCLUDE
-from json import JSONEncoder
+from marshmallow import Schema, fields, pre_dump, pre_load, post_dump, post_load, INCLUDE, RAISE
 import marshmallow_mongoengine as ma
 import mongoengine as me
-# from . import db as me
-# from ca_backend import db
-
+# import toastedmarshmallow
 
 class Base(Schema):
+
+    class Meta:
+    #     jit = toastedmarshmallow.Jit
+        pass
 
     Locations_iot_navigationLink = fields.URL()
     HistoricalLocations_iot_navigationLink = fields.URL()
@@ -20,7 +21,7 @@ class Base(Schema):
     @pre_load
     def change_key_name(self, data, **kwargs):
         if isinstance(data, dict):
-            return {str(key).replace('.', '_').replace('@', '_'): value for key, value in data.items()}
+            return {str(key).replace('.', '_').replace('@', '_'):value for key, value in data.items()}
 
 
 class LocationM(Base):
@@ -68,29 +69,48 @@ class Datastream(Base):
             return data
 
 
+# class LocationsM(Base):
+#     class Meta:
+#         model = LocationM
+#     value = fields.List(fields.Nested(LocationM))
+
+
+# class Observations(Base):
+#     class Meta:
+#         model = Observation
+#     value = fields.List(fields.Nested(Observation))
+
+
+# class Things(Base):
+#     class Meta:
+#         model = Thing
+#     value = fields.List(fields.Nested(Thing))
+
+
 class Datastreams(Base):
     class Meta:
         model = Datastream
     value = fields.List(fields.Nested(Datastream))
 
-
 class LocationsInThing(Thing):
     Locations = fields.List(fields.Nested(LocationM))
 
-
 class ThingAndLocationInDatastream(Datastream):
-    Observations = fields.List(fields.Nested(
-        Observation), data_key='Observations')
+    # Observations = fields.List(fields.Nested(Observation), data_key='Observations')
+    # Thing = fields.Nested(LocationsInThing, data_key='Thing')
+    Observations = fields.List(fields.Nested(Observation), data_key='Observations')
     Thing = fields.Nested(LocationsInThing, data_key='Thing')
-
 
 class FullDatastream(Schema):
     # class Meta:
-    #     fields = ('value')
+    #     model = ThingAndLocationInDatastream
     _iot_count = fields.Int(data_key='@iot.count')
     _iot_nextLink = fields.URL(data_key='@iot.nextLink')
     value = fields.List(fields.Nested(ThingAndLocationInDatastream))
 
+# class FullSta(ma.ModelSchema):
+#     class Meta:
+#         model=FullDatastream
 
 class ScenicSpotInfo(me.Document):
     Id = me.StringField()
@@ -129,21 +149,9 @@ class ScenicSpotInfo(me.Document):
     Keyword = me.StringField()
     Changetime = me.DateTimeField()
     Location = me.GeoPointField()
-    Keywords = me.ListField()
 
-    meta = {
-        # 'indexes': [
-        # {
-        #     'fields': ['$Name', "$Toldescribe"],
-        #     'default_language': 'english',
-        #     'weights': {'Name': 5, 'Toldescribe': 10}
-        #  }
-        # ],
-        'auto_create_index': True
-    }
-
-    def __repr__(self):
-        return '<ScenicSpotInfo(name={self.name!r})>'.format(self=self)
-
-    def to_dict(self):
-        return self.__dict__
+# class ScenicSpot(me.Document):
+#     # class Meta:
+#     #     unknown = INCLUDE
+#     Info = me.EmbeddedDocumentField(ScenicSpotInfo)
+#     Updatetime = me.DateTimeField()

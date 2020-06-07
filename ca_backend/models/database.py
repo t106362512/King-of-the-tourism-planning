@@ -5,7 +5,7 @@ class Database():
     @classmethod
     def initialize(cls, *args, **kwargs):
         # client = pymongo.MongoClient("mongodb://localhost:27017/test_db")
-        client = pymongo.MongoClient(*args, **kwargs)
+        client = pymongo.MongoClient('mongodb+srv://ccw:cvber234@cluster0-degz6.gcp.mongodb.net/test?retryWrites=true&w=majority')
         cls.database = client.get_default_database()
 
     @classmethod
