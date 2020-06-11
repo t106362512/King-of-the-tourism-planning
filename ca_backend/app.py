@@ -2,7 +2,7 @@ from flask import Flask
 from flask_restful import Resource, Api
 from models import db
 from models.database import Database
-from Resources.ScenicSpot import ScenicSpot_resource
+from resources.ScenicSpot import ScenicSpot_resource
 from . import create_app
 # from api.sta_iot import STA
 import os

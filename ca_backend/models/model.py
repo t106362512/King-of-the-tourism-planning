@@ -2,6 +2,8 @@ from marshmallow import Schema, fields, pre_dump, pre_load, post_dump, post_load
 from json import JSONEncoder
 import marshmallow_mongoengine as ma
 import mongoengine as me
+import requests
+import json
 # from . import db as me
 # from ca_backend import db
 
@@ -67,13 +69,6 @@ class Datastream(Base):
                 data['phenomenonTime']).split('/')
             return data
 
-
-class Datastreams(Base):
-    class Meta:
-        model = Datastream
-    value = fields.List(fields.Nested(Datastream))
-
-
 class LocationsInThing(Thing):
     Locations = fields.List(fields.Nested(LocationM))
 
@@ -93,7 +88,8 @@ class FullDatastream(Schema):
 
 
 class ScenicSpotInfo(me.Document):
-    Id = me.StringField()
+    # pylint: disable=no-member
+    Id = me.StringField(primary_key=True)
     Name = me.StringField()
     Zone = me.StringField()
     Toldescribe = me.StringField()
@@ -147,3 +143,38 @@ class ScenicSpotInfo(me.Document):
 
     def to_dict(self):
         return self.__dict__
+
+    @staticmethod
+    def get(args:dict):
+        raw_query = {
+            'Name': args['Name'],
+            'Toldescribe__icontains': args['Keyword'],
+            'Ticketinfo__icontains': args['Ticketinfo'],
+            'Travellinginfo__icontains': args['Travellinginfo'],
+            'Add__icontains': args['Add'],
+            # 'Location__geo_within_center': [args['Location'].split(','), args['Distance']] if args['Location'] and args['Distance'] else None,
+            # 'Location__geo_within_sphere': [args['Location'].split(','), args['Distance']] if args['Location'] and args['Distance'] else None
+            'Location__near': list(map(float, args['Location'].split(','))),
+            'Location__max_distance': float(args['Distance'])
+        }
+        query = dict(filter(lambda item: item[1] is not None or False, raw_query.items()))
+        q_set_json = ScenicSpotInfo.objects(**query).to_json()
+        return json.loads(q_set_json)
+    
+    @staticmethod
+    def update():
+        url = 'https://gis.taiwan.net.tw/XMLReleaseALL_public/scenic_spot_C_f.json'
+        content = requests.get(url).text
+        result = json.loads(content)['XML_Head']['Infos']['Info']
+        bulk = []
+        for info in result:
+            s = ScenicSpotInfo(**info)
+            s.Location = (info['Px'], info['Py'])
+            s.Keywords = info['Keyword'].split(',') if isinstance(info['Keyword'], str) else None
+            bulk.append(s)
+        ScenicSpotInfo.objects.insert(bulk)
+        return json.loads(ScenicSpotInfo.objects.all().to_json())
+
+    @staticmethod
+    def delete():
+        return ScenicSpotInfo.objects.delete()
