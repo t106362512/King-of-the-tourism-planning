@@ -1,11 +1,11 @@
-from models.model import ScenicSpotInfo
-from models.database import Database
+from ..models.model import ScenicSpotInfo
+from ..models.database import Database
 from flask_restful import Resource, reqparse
 import requests
 import json
 import re
 
-class ScenicSpot_resource(Resource):
+class ScenicSpot(Resource):
 
 
     def get(self):
@@ -25,7 +25,7 @@ class ScenicSpot_resource(Resource):
         pass
 
     def put(self):
-        return ScenicSpotInfo.update()
+        return ScenicSpotInfo.insert_all()
 
     def delete(self):
         result = ScenicSpotInfo.delete()

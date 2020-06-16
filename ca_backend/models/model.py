@@ -1,91 +1,13 @@
-from marshmallow import Schema, fields, pre_dump, pre_load, post_dump, post_load, INCLUDE, RAISE, EXCLUDE
 from json import JSONEncoder
+# from iteration_utilities import unique_everseen
+from mongoengine import signals
 import marshmallow_mongoengine as ma
 import mongoengine as me
 import requests
 import json
+
 # from . import db as me
 # from ca_backend import db
-
-
-class Base(Schema):
-
-    Locations_iot_navigationLink = fields.URL()
-    HistoricalLocations_iot_navigationLink = fields.URL()
-    Datastreams_iot_navigationLink = fields.URL()
-    MultiDatastreams_iot_navigationLink = fields.URL()
-    _iot_id = fields.Int()
-    _iot_selfLink = fields.URL()
-    _iot_nextLink = fields.URL()
-    _iot_count = fields.Int()
-
-    @pre_load
-    def change_key_name(self, data, **kwargs):
-        if isinstance(data, dict):
-            return {str(key).replace('.', '_').replace('@', '_'): value for key, value in data.items()}
-
-
-class LocationM(Base):
-    class Meta:
-        unknown = True
-    name = fields.Str(required=True)
-    description = fields.Str(required=True)
-    encodingType = fields.Str(required=True)
-    location = fields.Raw(required=True)
-
-
-class Observation(Base):
-    class Meta:
-        unknown = True
-    phenomenonTime = fields.DateTime()
-    resultTime = fields.Str(allow_none=True)
-    result = fields.Raw()
-    properties = fields.Raw()
-
-
-class Thing(Base):
-    class Meta:
-        unknown = True
-    name = fields.Str(required=True)
-    description = fields.Str(required=True)
-    properties = fields.Raw()
-
-
-class Datastream(Base):
-    class Meta:
-        unknown = True
-    name = fields.Str(required=True)
-    description = fields.Str(required=True)
-    observationType = fields.URL()
-    unitOfMeasurement = fields.Raw()
-    phenomenonTime = fields.Str()
-    phenomenon_time_start = fields.DateTime()
-    phenomenon_time_end = fields.DateTime()
-
-    @pre_load
-    def spilt_phenomenonTime(self, data, **kwargs):
-        if 'phenomenonTime' in data:
-            (data['phenomenon_time_start'], data['phenomenon_time_end']) = str(
-                data['phenomenonTime']).split('/')
-            return data
-
-class LocationsInThing(Thing):
-    Locations = fields.List(fields.Nested(LocationM))
-
-
-class ThingAndLocationInDatastream(Datastream):
-    Observations = fields.List(fields.Nested(
-        Observation), data_key='Observations')
-    Thing = fields.Nested(LocationsInThing, data_key='Thing')
-
-
-class FullDatastream(Schema):
-    # class Meta:
-    #     fields = ('value')
-    _iot_count = fields.Int(data_key='@iot.count')
-    _iot_nextLink = fields.URL(data_key='@iot.nextLink')
-    value = fields.List(fields.Nested(ThingAndLocationInDatastream))
-
 
 class ScenicSpotInfo(me.Document):
     # pylint: disable=no-member
@@ -144,8 +66,8 @@ class ScenicSpotInfo(me.Document):
     def to_dict(self):
         return self.__dict__
 
-    @staticmethod
-    def get(args:dict):
+    @classmethod
+    def get(cls, args:dict):
         raw_query = {
             'Name': args['Name'],
             'Toldescribe__icontains': args['Keyword'],
@@ -154,27 +76,83 @@ class ScenicSpotInfo(me.Document):
             'Add__icontains': args['Add'],
             # 'Location__geo_within_center': [args['Location'].split(','), args['Distance']] if args['Location'] and args['Distance'] else None,
             # 'Location__geo_within_sphere': [args['Location'].split(','), args['Distance']] if args['Location'] and args['Distance'] else None
-            'Location__near': list(map(float, args['Location'].split(','))),
-            'Location__max_distance': float(args['Distance'])
+            'Location__near': list(map(float, args['Location'].split(','))) if args['Location'] else None,
+            'Location__max_distance': float(args['Distance']) if args['Distance'] and args['Location'] else None
         }
         query = dict(filter(lambda item: item[1] is not None or False, raw_query.items()))
-        q_set_json = ScenicSpotInfo.objects(**query).to_json()
+        q_set_json = cls.objects(**query).to_json()
         return json.loads(q_set_json)
     
-    @staticmethod
-    def update():
+    @classmethod
+    def insert_all(cls):
         url = 'https://gis.taiwan.net.tw/XMLReleaseALL_public/scenic_spot_C_f.json'
         content = requests.get(url).text
-        result = json.loads(content)['XML_Head']['Infos']['Info']
+        infos = json.loads(content)['XML_Head']['Infos']['Info']
         bulk = []
-        for info in result:
-            s = ScenicSpotInfo(**info)
+        # mongo_data = cls.objects.only('Id').as_pymongo()#.to_json()
+        # all = [user._id for user in mongo_data._iter_results()]
+        # print(all)
+
+        for info in infos:
+            s = cls(**info)
             s.Location = (info['Px'], info['Py'])
             s.Keywords = info['Keyword'].split(',') if isinstance(info['Keyword'], str) else None
             bulk.append(s)
-        ScenicSpotInfo.objects.insert(bulk)
-        return json.loads(ScenicSpotInfo.objects.all().to_json())
+            
+        cls.objects.insert(bulk)
+        return json.loads(cls.objects.all().to_json())
+        # return cls.objects.all().to_mongo().to_dict()
 
-    @staticmethod
-    def delete():
-        return ScenicSpotInfo.objects.delete()
+    @classmethod
+    def delete(cls):
+        return cls.objects.delete()
+
+class CILocation(me.Document):
+    # pylint: disable=no-member
+    name = me.StringField()
+    description = me.StringField()
+    encodingType = me.StringField()
+    location = me.GeoJsonBaseField()
+    _iot_id = me.IntField()
+    _iot_selfLink = me.StringField(primary_key=True)
+    HistoricalLocations_iot_navigationLink = me.StringField()
+    Things_iot_navigationLink = me.StringField()
+
+    meta = {
+        'indexes': [[("location", "2dsphere")]],
+        'auto_create_index': True
+    }
+
+    @classmethod
+    def _change_key_name(cls, data, **kwargs):
+        if isinstance(data, dict):
+            return {str(key).replace('.', '_').replace('@', '_'): value for key, value in data.items()}
+
+    @classmethod
+    def get(cls, args:dict):
+        raw_query = {
+            'location__geo_within_center': [list(map(float, args['Location'].split(','))), float(args['Distance'])] if args['Location'] and args['Distance'] else None,
+            # 'location__geo_within_sphere': [list(map(float, args['Location'].split(','))), float(args['Distance'])] if args['Location'] and args['Distance'] else None
+        }
+        query = dict(filter(lambda item: item[1] is not None or False, raw_query.items()))
+        q_set_json = cls.objects(**query).to_json()
+        return json.loads(q_set_json)
+
+    @classmethod
+    def get_info(cls):
+        pass
+
+    @classmethod
+    def insert_all(cls, station='STA_Rain', **kwargs):
+        url = kwargs.get('url', f'https://sta.ci.taiwan.gov.tw/{station}/v1.0/Locations')
+        data_content = json.loads(requests.get(url).text)
+        infos = data_content['value']
+        bulk = [cls(**cls._change_key_name(info)) for info in infos]
+        cls.objects.insert(bulk)
+        if '@iot.nextLink' in data_content:
+            cls.insert_all(url=data_content['@iot.nextLink'])
+        return json.loads(cls.objects.all().to_json())
+
+    @classmethod
+    def delete_all(cls):
+        return cls.objects.delete()

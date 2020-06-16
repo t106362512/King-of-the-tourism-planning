@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+    <form method="post" action="/">
+        <label for="Name">Name:</label>
+        <input type="text" id="Name">
+        <label for="Keyword">Keyword:</label>
+        <input type="text" id="Keyword">
+        <label for="Location">Location:</label>
+        <input type="text" id="Location">
+        <label for="Distance">Distance:</label>
+        <input type="text" id="Distance">
+        <input type="submit" value="Submit" />
+    </form>
+    <br>
+    {% set path = myhtml %}
+    {% include "deck.html" %}
+{% endblock %}

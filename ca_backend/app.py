@@ -1,11 +1,14 @@
 from flask import Flask
 from flask_restful import Resource, Api
-from models import db
-from models.database import Database
-from resources.ScenicSpot import ScenicSpot_resource
+from .models import db
+from .models.database import Database
 from . import create_app
 # from api.sta_iot import STA
 import os
+
+
+def index(parameter_list):
+    pass
 
 if __name__ == "__main__":
 
