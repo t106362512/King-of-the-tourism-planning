@@ -1,11 +1,13 @@
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <title>pydeck</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
-    <script src=https://cdn.jsdelivr.net/npm/@deck.gl/jupyter-widget@~8.1.*/dist/index.js></script>
-    <style>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <title>pydeck</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/fontawesome.min.css') }}">
+  <script src="{{ url_for('static', filename='js/deck.gl.index.js') }}"></script>
+  <style>
     body {
       margin: 0;
       padding: 0;
@@ -40,25 +42,27 @@
       width: 100vw;
       height: 100vh;
     }
-    </style>
-  </head>
-  <body>
-    <div id="deck-container">
-    </div>
-  </body>
-  <script>
-    const jsonInput = {"initialViewState": {"bearing": -27.36, "latitude": 52.2323, "longitude": -1.415, "maxZoom": 15, "minZoom": 5, "pitch": 40.5, "zoom": 6}, "layers": [{"@@type": "HexagonLayer", "autoHighlight": true, "coverage": 1, "data": "https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/3d-heatmap/heatmap-data.csv", "elevationRange": [0, 3000], "elevationScale": 50, "extruded": true, "getPosition": "@@=[lng, lat]", "id": "01aa0629-c19a-4d60-a0c3-26bddb42a190", "pickable": true}], "mapStyle": "mapbox://styles/mapbox/dark-v9", "views": [{"@@type": "MapView", "controller": true}]};
-    const MAPBOX_API_KEY = 'pk.eyJ1Ijoiam9hbjk1MDEiLCJhIjoiY2tiZW9teHVpMG50MDJyb2l0emY1dHVuaiJ9.Rgwd6CXsSIR1dDkWKW9wTA';
-    const tooltip = true;
-    const customLibraries = null;
+  </style>
+</head>
 
-    const deck = createDeck({
-      mapboxApiKey: MAPBOX_API_KEY,
-      container: document.getElementById('deck-container'),
-      jsonInput,
-      tooltip,
-      customLibraries
-    });
+<body>
+  <div id="deck-container">
+  </div>
+</body>
+<script>
+  var jsonInput = '{{deck_json| safe}}';
+  var MAPBOX_API_KEY = '{{MAPBOX_API_KEY| safe}}';
+  const tooltip = true;
+  const customLibraries = null;
 
-  </script>
+  const deck = createDeck({
+    mapboxApiKey: MAPBOX_API_KEY,
+    container: document.getElementById('deck-container'),
+    jsonInput,
+    tooltip,
+    customLibraries
+  });
+
+</script>
+
 </html>

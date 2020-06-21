@@ -40,10 +40,9 @@ def map():
         pitch=40.5,
         bearing=-27.36)
 
-    # Render
     r = pdk.Deck(layers=[layer], initial_view_state=view_state, mapbox_key=os.getenv('MAPBOX_API_KEY'))
-    deck_map = r.to_html('templates/deck.html', notebook_display=False)
-    return render_template('demo.html', myhtml=deck_map)
+    deck_map = r.to_json()
+    return render_template('demo.html', deck_json=deck_map)
 
 @demo.route('/scenice')
 def scenice():
@@ -84,5 +83,5 @@ def scenice():
     r = pdk.Deck(
         layers=[polygon, geojson],
         initial_view_state=INITIAL_VIEW_STATE, mapbox_key=os.getenv('MAPBOX_API_KEY'))
-    deck_map = r.to_html('templates/deck.html', notebook_display=False)
-    return render_template('demo.html', myhtml=deck_map)
+    deck_map = r.to_json()
+    return render_template('demo.html', deck_json=deck_map)

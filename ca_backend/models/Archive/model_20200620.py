@@ -2,13 +2,14 @@
 from pymongo.errors import BulkWriteError
 from mongoengine import signals  # from blinker import signal
 import marshmallow_mongoengine as ma
-import multiprocessing
 import mongoengine as me
-import asyncio
 import logging
 import requests
 import json
 import uuid
+
+# from . import db as me
+# from ca_backend import db
 
 class ScenicSpotInfo(me.Document):
     # pylint: disable=no-member
@@ -138,15 +139,10 @@ class CILocation(me.Document):
         ]
     }
 
-    def __init__(self, *args, **kwargs):
-        # blinker signals 無法應用在 bulk.find().upsert().replace_one(), 故直接改 init
-        kwargs = {str(key).replace('.', '_').replace('@', '_'): value for key, value in kwargs.items()}
-        super(CILocation, self).__init__(*args, **kwargs)
-    
-    # @classmethod
-    # def _change_key_name(cls, data, **kwargs):
-    #     if isinstance(data, dict):
-    #         return {str(key).replace('.', '_').replace('@', '_'): value for key, value in data.items()}
+    @classmethod
+    def _change_key_name(cls, data, **kwargs):
+        if isinstance(data, dict):
+            return {str(key).replace('.', '_').replace('@', '_'): value for key, value in data.items()}
 
     @classmethod
     def get(cls, args:dict):
@@ -159,7 +155,7 @@ class CILocation(me.Document):
         return json.loads(q_set_json)
 
     @classmethod
-    def insert_all(cls, station, **kwargs):
+    def insert_all(cls, station='STA_Rain', **kwargs):
 
         url = kwargs.get('url', f'https://sta.ci.taiwan.gov.tw/{station}/v1.0/Locations')
         data_content = json.loads(requests.get(url).text)
@@ -168,8 +164,7 @@ class CILocation(me.Document):
         # o_bulk = [cls(**cls._change_key_name(info)) for info in infos]
 
         for info in infos:
-            # ci_location_model = cls(**cls._change_key_name(info))
-            ci_location_model = cls(**info)
+            ci_location_model = cls(**cls._change_key_name(info))
             ci_location_model.station = station
             bulk.find({ "_iot_selfLink": ci_location_model['_iot_selfLink'] }).upsert().replace_one(ci_location_model.to_mongo())
         try:
@@ -179,7 +174,7 @@ class CILocation(me.Document):
             raise
 
         if '@iot.nextLink' in data_content:
-            cls.insert_all(station, url=data_content['@iot.nextLink'])
+            cls.insert_all(url=data_content['@iot.nextLink'])
         return json.loads(cls.objects.all().to_json())
 
     @classmethod
@@ -194,25 +189,8 @@ class Observation(me.EmbeddedDocument):
     _iot_id = me.IntField()
     _iot_selfLink = me.StringField()
 
-    meta = {
-        'auto_create_index': True,
-        'collection': 'ci_observation',
-        'indexes': [
-            {'fields': ['_iot_selfLink', 'phenomenonTime', 'resultTime'], 'unique': True}
-        ]
-    }
-
-    def __init__(self, *args, **kwargs):
-        kwargs = {str(key).replace('.', '_').replace('@', '_'): value for key, value in kwargs.items()}
-        super(Observation, self).__init__(*args, **kwargs)
-
-    
-    # @classmethod
-    # def pre_init(cls, sender, document, **kwargs):
-    #     # logging.info("Pre Save: %s" % document.name)
-    #     print("Pre %s" % document)
-    #     print("Pre Save: %s" % document)
-
+    def __init__(self, data, *args, **kwargs):
+        {str(key).replace('.', '_').replace('@', '_'): value for key, value in data.items()}
 
 class Datastream(me.Document):
     # pylint: disable=no-member
@@ -225,102 +203,29 @@ class Datastream(me.Document):
     resultTime = me.StringField()
     Sensor_iot_navigationLink = me.StringField()
     ObservedProperty_iot_navigationLink = me.StringField()
-    Thing_iot_navigationLink = me.StringField()
+    Things_iot_navigationLink = me.StringField()
     Observations_iot_navigationLink = me.StringField()
-    Observations = me.EmbeddedDocumentListField(Observation)
+    # Observations
     Observations_iot_nextLink = me.StringField()
     _iot_id = me.IntField()
     _iot_selfLink = me.StringField()
-    Location = me.GeoPointField()
 
     meta = {
+        # 'indexes': [],
         'auto_create_index': True,
         'collection': 'ci_datastream',
         'indexes': [
-            {'fields': ['_iot_selfLink'], 'unique': True},
-            [("Location", "2dsphere")] 
+            {'fields': ['_iot_selfLink'], 'unique': True}
         ]
     }
 
-    def __init__(self, *args, **kwargs):
-        kwargs = {str(key).replace('.', '_').replace('@', '_'): value for key, value in kwargs.items()}
-        super(Datastream, self).__init__(*args, **kwargs)
+    @classmethod
+    def pre_save(cls, sender, document, **kwargs):
+        logging.debug("Pre Save: %s" % document.name)
+
 
     @classmethod
-    def insert_all(cls, station:str, location:str, **kwargs):
-
-        url = kwargs.get('url', f'https://sta.ci.taiwan.gov.tw/{station}/v1.0/Datastreams')
-        loc = location.replace(',',' ')
-        pa = {
-            "$expand": "Observations($orderby=phenomenonTime desc;$top=1)",
-            # "$filter": "st_within(Thing/Locations/location, geography'POINT (121.4946 24.7783)')"
-            "$filter": f"st_within(Thing/Locations/location, geography'POINT ({loc})')"
-        }
-        data_content = json.loads(requests.get(url, params=pa).text)
-        infos = data_content['value']
-        bulk = cls._get_collection().initialize_ordered_bulk_op()
-
-        for info in infos:
-            # obs = [Observation(**i) for i in info.pop('Observations')]
-            obs = [Observation(**i).to_mongo() for i in info.pop('Observations')]
-            ci_datastream_model = cls(**info)
-            ci_datastream_model.station = station
-            # ci_datastream_model.Observations.append(obs)
-            ci_datastream_model.Location = tuple(map(float, location.split(',')))
-            # bulk.find({"_iot_selfLink": ci_datastream_model['_iot_selfLink']}).upsert().replace_one(ci_datastream_model.to_mongo())
-            bulk.find({"_iot_selfLink": ci_datastream_model['_iot_selfLink']}).upsert().update_one({'$setOnInsert':{'Observations': obs}})
-        try:
-            bulk.execute()
-        except BulkWriteError as bwe:
-            logging.error(bwe.details)
-            raise
-
-        if '@iot.nextLink' in data_content:
-            cls.insert_all(station, location, url=data_content['@iot.nextLink'])
-        return json.loads(cls.objects.all().to_json())
-
-    @classmethod
-    def insert(cls, station:str, location:str, **kwargs):
-
-        url = kwargs.get('url', f'https://sta.ci.taiwan.gov.tw/{station}/v1.0/Datastreams')
-        loc = location.replace(',',' ')
-        pa = {
-            "$expand": "Observations($orderby=phenomenonTime desc;$top=1)",
-            "$filter": f"st_within(Thing/Locations/location, geography'POINT ({loc})')"
-        }
-        data_content = json.loads(requests.get(url, params=pa).text)
-        infos = data_content['value']
-        bulk = cls._get_collection().initialize_ordered_bulk_op()
-
-        for info in infos:
-            obs = [Observation(**i) for i in info.pop('Observations')]
-            # obs = [Observation(**i).to_mongo() for i in info.pop('Observations')]
-            ci_datastream_model = cls(**info)
-            ci_datastream_model.station = station
-            ci_datastream_model.Observations.append(obs)
-            ci_datastream_model.Location = tuple(map(float, location.split(',')))
-            ci_datastream_model.save()
-
-        if '@iot.nextLink' in data_content:
-            cls.insert_all(station, location, url=data_content['@iot.nextLink'])
-        return json.loads(cls.objects.all().to_json())
-
-    @classmethod
-    def get(cls, args:dict):
-        raw_query = {
-            'Name': args['Name'], # ELEV, RAIN, MIN_10, HOUR_3, HOUR_6, HOUR_12, HOUR_24, NOW
-            'Toldescribe__icontains': args['Keyword'],
-            'Ticketinfo__icontains': args['Ticketinfo'],
-            'Travellinginfo__icontains': args['Travellinginfo'],
-            'Add__icontains': args['Add'],
-            # 'Location__geo_within_center': [args['Location'].split(','), args['Distance']] if args['Location'] and args['Distance'] else None,
-            # 'Location__geo_within_sphere': [args['Location'].split(','), args['Distance']] if args['Location'] and args['Distance'] else None
-            'Location__near': list(map(float, args['Location'].split(','))) if args['Location'] else None,
-            'Location__max_distance': float(args['Distance']) if args['Distance'] and args['Location'] else None
-        }
-        query = dict(filter(lambda item: item[1] is not None or False, raw_query.items()))
-        q_set_json = cls.objects(**query).to_json()
-        return json.loads(q_set_json)
-    
-
-# signals.pre_init.connect(Observation.pre_init, sender=Observation)
+    def _change_key_name(cls, data, **kwargs):
+        if isinstance(data, dict):
+            lambda x: x
+            return {str(key).replace('.', '_').replace('@', '_'): value for key, value in data.items()}
