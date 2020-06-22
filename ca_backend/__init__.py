@@ -6,6 +6,7 @@ from flask_bootstrap import Bootstrap
 from .api.ScenicSpot import ScenicSpot
 from .api.STAIOT import STALoc
 from .views.demo import demo
+from .views.datatable import datable
 import os
 
 db = MongoEngine()
@@ -22,5 +23,6 @@ def create_app(config_name='development'):
     api.add_resource(ScenicSpot, '/api/scenice')
     api.add_resource(STALoc, '/api/location')
     app.register_blueprint(demo, url_prefix='/site')
+    app.register_blueprint(datable)
 
     return app

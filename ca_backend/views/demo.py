@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, g, session
 import pydeck as pdk
 import os
 
-
 demo = Blueprint('demo', __name__, template_folder='templates',
                     static_folder='static')
 

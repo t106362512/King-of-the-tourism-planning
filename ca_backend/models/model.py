@@ -54,13 +54,6 @@ class ScenicSpotInfo(me.Document):
     Keywords = me.ListField()
 
     meta = {
-        # 'indexes': [
-        # {
-        #     'fields': ['$Name', "$Toldescribe"],
-        #     'default_language': 'english',
-        #     'weights': {'Name': 5, 'Toldescribe': 10}
-        #  }
-        # ],
         'auto_create_index': True,
         'collection': 'scenic_spot_info',
         'indexes': [{'fields': ['Id'], 'unique': True}]
@@ -106,10 +99,7 @@ class ScenicSpotInfo(me.Document):
             bulk.execute()
         except BulkWriteError as bwe:
             logging.error(bwe.details)
-            #you can also take this component and do more analysis
-            #werrors = bwe.details['writeErrors']
             raise
-        # cls.objects.insert(bulk)
         return json.loads(cls.objects.all().to_json())
 
     @classmethod
@@ -129,7 +119,6 @@ class CILocation(me.Document):
     Things_iot_navigationLink = me.StringField()
 
     meta = {
-        # 'indexes': [],
         'auto_create_index': True,
         'collection': 'ci_location',
         'indexes': [
@@ -143,11 +132,6 @@ class CILocation(me.Document):
         kwargs = {str(key).replace('.', '_').replace('@', '_'): value for key, value in kwargs.items()}
         super(CILocation, self).__init__(*args, **kwargs)
     
-    # @classmethod
-    # def _change_key_name(cls, data, **kwargs):
-    #     if isinstance(data, dict):
-    #         return {str(key).replace('.', '_').replace('@', '_'): value for key, value in data.items()}
-
     @classmethod
     def get(cls, args:dict):
         raw_query = {
@@ -165,10 +149,8 @@ class CILocation(me.Document):
         data_content = json.loads(requests.get(url).text)
         infos = data_content['value']
         bulk = cls._get_collection().initialize_ordered_bulk_op()
-        # o_bulk = [cls(**cls._change_key_name(info)) for info in infos]
 
         for info in infos:
-            # ci_location_model = cls(**cls._change_key_name(info))
             ci_location_model = cls(**info)
             ci_location_model.station = station
             bulk.find({ "_iot_selfLink": ci_location_model['_iot_selfLink'] }).upsert().replace_one(ci_location_model.to_mongo())
@@ -267,7 +249,6 @@ class Datastream(me.Document):
             ci_datastream_model.station = station
             # ci_datastream_model.Observations.append(obs)
             ci_datastream_model.Location = tuple(map(float, location.split(',')))
-            # bulk.find({"_iot_selfLink": ci_datastream_model['_iot_selfLink']}).upsert().replace_one(ci_datastream_model.to_mongo())
             bulk.find({"_iot_selfLink": ci_datastream_model['_iot_selfLink']}).upsert().update_one({'$setOnInsert':{'Observations': obs}})
         try:
             bulk.execute()
@@ -322,5 +303,44 @@ class Datastream(me.Document):
         q_set_json = cls.objects(**query).to_json()
         return json.loads(q_set_json)
     
+class BaseDataTables:
+    
+    def __init__(self, request, columns, collection):
+        
+        self.columns = columns
+        self.collection = collection
+        # values specified by the datatable for filtering, sorting, paging
+        self.request_values = request.values
+        # results from the db
+        self.result_data = None
+        # total in the table after filtering
+        self.cardinality_filtered = 0
+        # total in the table unfiltered
+        self.cadinality = 0
+        self.run_queries()
+    
+    def output_result(self):
+        
+        output = {}
+        # output['sEcho'] = str(int(self.request_values['sEcho']))
+        # output['iTotalRecords'] = str(self.cardinality)
+        # output['iTotalDisplayRecords'] = str(self.cardinality_filtered)
+        aaData_rows = []
+        for row in self.result_data:
+            aaData_row = []
+            for i in range(len(self.columns)):
+                print(row, self.columns, self.columns[i])
+                aaData_row.append(str(row[ self.columns[i] ]).replace('"','\\"'))
+            aaData_rows.append(aaData_row)
+        output['aaData'] = aaData_rows
+        return output
+    
+    def run_queries(self):
+        
+         self.result_data = self.collection
+         self.cardinality_filtered = len(self.result_data)
+         self.cardinality = len(self.result_data)
+
+columns = [ 'column_1', 'column_2', 'column_3', 'column_4']
 
 # signals.pre_init.connect(Observation.pre_init, sender=Observation)
