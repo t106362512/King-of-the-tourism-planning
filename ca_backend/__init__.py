@@ -20,7 +20,7 @@ def create_app(config_name='development'):
     api = Api(app)
     db.init_app(app)
     cache.init_app(app)
-    api.add_resource(ScenicSpot, '/api/scenice')
+    api.add_resource(ScenicSpot, '/api/scenice', endpoint="api.scenice") # end point for jinja2 url_for using
     api.add_resource(STALoc, '/api/location')
     app.register_blueprint(demo, url_prefix='/site')
     app.register_blueprint(datable)

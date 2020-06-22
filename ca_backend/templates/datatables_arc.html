@@ -23,14 +23,8 @@ $(document).ready(function() {
 		"sDom": "<'row-fluid'<'span6 toolbar'><'span6'>r>t<'row-fluid'<'span6'f><'span6'p>>",
 		"bProcessing": true,
 		"bjQueryUI": true,
-		"sAjaxSource": "{{ url_for('api.scenice', Location='121.2977,24.9433', Distance='0.01') | safe}}",
-		"columns":[
-			{"data":"Id"},
-			{"data":"Name"},
-			{"data":"Description"},
-			{"data":"Tel"}
-		]
 		//<!-- "sAjaxSource": "{{ url_for('.get_server_data') }}", -->
+		"sAjaxSource": "{{ url_for('api.scenice', Name=宏亞食品巧克力觀光工廠, Distance=0.01) }}"
 	});
 } );
 </script>

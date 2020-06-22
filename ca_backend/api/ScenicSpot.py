@@ -18,7 +18,7 @@ class ScenicSpot(Resource):
         parser.add_argument('Location', type=str, default=None, help='plz type like the 121.297187,24.943325')
         parser.add_argument('Distance', type=float, default=None, help='plz type the number')
         args = parser.parse_args()
-        result = ScenicSpotInfo.get(args)
+        result = {'data': ScenicSpotInfo.get(args)}
         return result
 
     def post(self):
