@@ -18,25 +18,59 @@
 </head>
 
 <script>
-$(document).ready(function() {
-	$('#example').dataTable( {
-		"sDom": "<'row-fluid'<'span6 toolbar'><'span6'>r>t<'row-fluid'<'span6'f><'span6'p>>",
-		"bProcessing": true,
-		"bjQueryUI": true,
-		"sAjaxSource": "{{ url_for('api.scenice', Location='121.2977,24.9433', Distance='0.06') | safe}}",
-		"columns":[
-			{"data":"Id"},
-			{"data":"Name"},
-			{"data":"Description"},
-			{"data":"Tel"}
-		]
-		//<!-- "sAjaxSource": "{{ url_for('.get_server_data') }}", -->
-	});
-} );
+	$(document).ready(function() {
+
+		$.ajax({
+			url: "{{ url_for('api.scenice', Location='121.2977,24.9433', Distance='0.06') | safe}}",
+			type: 'get',
+			success: function (response) {
+				console.log(response)
+
+				var options = '';
+				var res = response.data;
+				for (i = 0; i < res.length; i++) {
+					options+= '<option value="' + res[i].Name + '" >';
+				  }
+				  document.getElementById('SciList').innerHTML = options;
+			},
+			error: function (error) {
+				console.log('error')
+			}
+
+		});
+
+		$('#example').dataTable( {
+			"select": true,
+			"Dom": "<'row-fluid'<'span6 toolbar'><'span6'>r>t<'row-fluid'<'span6'f><'span6'p>>",
+			"Processing": true,
+			"jQueryUI": true,
+			"ajax": {
+				"url": "{{ url_for('api.scenice', Location='121.2977,24.9433', Distance='0.06') | safe}}",
+				"data": function ( d ) {
+					d.extra_search = $('#extra').val();
+				}
+			},
+			"columns":[
+				{"data":"Id"},
+				{"data":"Name"},
+				{"data":"Description"},
+				{"data":"Tel"}
+			]
+		});
+		$("#listinput").on("click", function () {
+			console.log('click')
+
+		});
+	} );
 </script>
 
 <body>
-	<div class="container">
+	<div class="container" style="width:50%; height:auto; float:left; display:inline">
+		選擇城市: <input type="text" id="listinput" list="SciList" /><br />
+		<datalist id="SciList">
+		</datalist>
+	</div>
+	<div  style="width:50%; height:auto; float:left; display:inline" class="container">
 	<table class='table' id='example'>
 		<thead>
 			<tr>
@@ -52,7 +86,6 @@ $(document).ready(function() {
 <footer class="footer">
 	<div class="container">
     <ul class="footer-links">
-        <li>© 2013</li>
         <li><a href='https://github.com/imwilsonxu/flask-datatables'>About</a></li>
 	</ul>
 	</div>

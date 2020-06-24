@@ -11,5 +11,6 @@
     "python.testing.unittestEnabled": false,
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
-    "python.testing.promptToConfigure": false
+    "python.testing.promptToConfigure": false,
+    "python.pythonPath": "/Users/chia/.local/share/virtualenvs/code-o9wILsh8/bin/python"
 }

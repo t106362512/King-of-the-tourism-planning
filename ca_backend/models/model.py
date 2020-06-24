@@ -1,7 +1,7 @@
 # from iteration_utilities import unique_everseen
 from pymongo.errors import BulkWriteError
 from mongoengine import signals  # from blinker import signal
-import marshmallow_mongoengine as ma
+# import marshmallow_mongoengine as ma
 import multiprocessing
 import mongoengine as me
 import asyncio
