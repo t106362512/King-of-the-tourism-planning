@@ -1,42 +1,57 @@
 <html>
+
 <head>
-<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=big5">
+	<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=big5">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+	<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
 </head>
 
 <body>
-<h2 align=center>動態下拉式選單：增加選項與刪除選項</h2>
-<hr>
+	<h2 align=center>動態下拉式選單：增加選項與刪除選項</h2>
+	<hr>
+	<select class="selectpicker">
+		<option>Mustard</option>
+		<option>Ketchup</option>
+		<option>Barbecue</option>
+	</select>
+	  
+	<script>
+		function deleteOption(list) {
+			var index = list.selectedIndex;
+			if (index >= 0)
+				list.options[index] = null;
+			else
+				alert("無反白選項！");
+		}
 
-<script>
-function deleteOption(list){
-	var index=list.selectedIndex;
-	if (index>=0)
-		list.options[index]=null;
-	else
-		alert("無反白選項！");
-}
+		function addOption(list, text, value) {
+			var index = list.options.length;
+			list.options[index] = new Option(text, value);
+			list.selectedIndex = index;
+		}
+	</script>
 
-function addOption(list, text, value){
-	var index=list.options.length;
-	list.options[index]=new Option(text, value);
-	list.selectedIndex=index;
-}
-</script>
+	<form>
+		<select id=theList size=5>
+			<option value=星期一>Monday
+			<option value=星期三>Wednesday
+			<option value=星期五>Friday
+			<option value=星期日>Sunday
+		</select>
+		<p>
+			<input type="button" value="刪除反白選項" onclick="deleteOption(theList)"><br>
+			<input type="button" value="增加右列選項" onclick="addOption(theList, theText.value, theValue.value)">
+			Text: <input id=theText value="test">
+			Value: <input id=theValue value="test">
+	</form>
 
-<form>
-<select id=theList size=5>
-	<option value=星期一>Monday
-	<option value=星期三>Wednesday
-	<option value=星期五>Friday
-	<option value=星期日>Sunday
-</select>
-<p>
-<input type="button" value="刪除反白選項" onclick="deleteOption(theList)"><br>
-<input type="button" value="增加右列選項" onclick="addOption(theList, theText.value, theValue.value)">
-Text: <input id=theText value="test">
-Value: <input id=theValue value="test">
-</form>
-
-<hr>
+	<hr>
 </body>
+
 </html>
