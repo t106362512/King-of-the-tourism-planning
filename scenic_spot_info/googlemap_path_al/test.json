@@ -1,0 +1,1569 @@
+{
+    "destination_addresses": [
+        "253台灣新北市石門區草埔尾路5號",
+        "224台灣新北市瑞芳區基山街163號",
+        "Unnamed Road, 三芝區新北市台灣 252",
+        "Unnamed Road, 石門區新北市台灣 253",
+        "251台灣新北市淡水區馬偕街6號",
+        "248台灣新北市五股區御史路241-1號",
+        "253台灣新北市石門區老梅路1號",
+        "241台灣新北市三重區中央北路52號",
+        "236台灣新北市土城區金城路一段78號",
+        "253台灣新北市石門區藍色公路碼頭"
+    ],
+    "origin_addresses": [
+        "253台灣新北市石門區草埔尾路5號",
+        "224台灣新北市瑞芳區基山街163號",
+        "Unnamed Road, 三芝區新北市台灣 252",
+        "Unnamed Road, 石門區新北市台灣 253",
+        "251台灣新北市淡水區馬偕街6號",
+        "248台灣新北市五股區御史路241-1號",
+        "253台灣新北市石門區老梅路1號",
+        "241台灣新北市三重區中央北路52號",
+        "236台灣新北市土城區金城路一段78號",
+        "253台灣新北市石門區藍色公路碼頭"
+    ],
+    "rows": [
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "1 公尺",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "47.6 公里",
+                        "value": 47554
+                    },
+                    "duration": {
+                        "text": "1 小時 6 分鐘",
+                        "value": 3949
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 2 分鐘",
+                        "value": 3739
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "29.4 公里",
+                        "value": 29399
+                    },
+                    "duration": {
+                        "text": "44 分鐘",
+                        "value": 2628
+                    },
+                    "duration_in_traffic": {
+                        "text": "44 分鐘",
+                        "value": 2667
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "9.1 公里",
+                        "value": 9110
+                    },
+                    "duration": {
+                        "text": "13 分鐘",
+                        "value": 765
+                    },
+                    "duration_in_traffic": {
+                        "text": "13 分鐘",
+                        "value": 786
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "27.8 公里",
+                        "value": 27827
+                    },
+                    "duration": {
+                        "text": "45 分鐘",
+                        "value": 2718
+                    },
+                    "duration_in_traffic": {
+                        "text": "46 分鐘",
+                        "value": 2753
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "62.6 公里",
+                        "value": 62578
+                    },
+                    "duration": {
+                        "text": "1 小時 9 分鐘",
+                        "value": 4146
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 14 分鐘",
+                        "value": 4442
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "7.6 公里",
+                        "value": 7554
+                    },
+                    "duration": {
+                        "text": "12 分鐘",
+                        "value": 734
+                    },
+                    "duration_in_traffic": {
+                        "text": "13 分鐘",
+                        "value": 759
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "53.1 公里",
+                        "value": 53099
+                    },
+                    "duration": {
+                        "text": "1 小時 3 分鐘",
+                        "value": 3750
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 4 分鐘",
+                        "value": 3833
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "68.8 公里",
+                        "value": 68759
+                    },
+                    "duration": {
+                        "text": "1 小時 12 分鐘",
+                        "value": 4298
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 18 分鐘",
+                        "value": 4697
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "9.1 公里",
+                        "value": 9098
+                    },
+                    "duration": {
+                        "text": "13 分鐘",
+                        "value": 787
+                    },
+                    "duration_in_traffic": {
+                        "text": "14 分鐘",
+                        "value": 814
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "51.1 公里",
+                        "value": 51143
+                    },
+                    "duration": {
+                        "text": "1 小時 10 分鐘",
+                        "value": 4206
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 8 分鐘",
+                        "value": 4059
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 公尺",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "55.4 公里",
+                        "value": 55354
+                    },
+                    "duration": {
+                        "text": "1 小時 22 分鐘",
+                        "value": 4932
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 22 分鐘",
+                        "value": 4906
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "56.7 公里",
+                        "value": 56707
+                    },
+                    "duration": {
+                        "text": "1 小時 18 分鐘",
+                        "value": 4698
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 15 分鐘",
+                        "value": 4514
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "55.4 公里",
+                        "value": 55400
+                    },
+                    "duration": {
+                        "text": "1 小時 12 分鐘",
+                        "value": 4316
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 16 分鐘",
+                        "value": 4547
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "52.1 公里",
+                        "value": 52145
+                    },
+                    "duration": {
+                        "text": "58 分鐘",
+                        "value": 3495
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 3 分鐘",
+                        "value": 3804
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "55.2 公里",
+                        "value": 55151
+                    },
+                    "duration": {
+                        "text": "1 小時 18 分鐘",
+                        "value": 4667
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 15 分鐘",
+                        "value": 4507
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "42.7 公里",
+                        "value": 42666
+                    },
+                    "duration": {
+                        "text": "52 分鐘",
+                        "value": 3099
+                    },
+                    "duration_in_traffic": {
+                        "text": "54 分鐘",
+                        "value": 3212
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "58.7 公里",
+                        "value": 58725
+                    },
+                    "duration": {
+                        "text": "1 小時 0 分鐘",
+                        "value": 3623
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 9 分鐘",
+                        "value": 4158
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "56.7 公里",
+                        "value": 56695
+                    },
+                    "duration": {
+                        "text": "1 小時 19 分鐘",
+                        "value": 4720
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 16 分鐘",
+                        "value": 4583
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "32.9 公里",
+                        "value": 32900
+                    },
+                    "duration": {
+                        "text": "48 分鐘",
+                        "value": 2899
+                    },
+                    "duration_in_traffic": {
+                        "text": "48 分鐘",
+                        "value": 2909
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "60.1 公里",
+                        "value": 60064
+                    },
+                    "duration": {
+                        "text": "1 小時 29 分鐘",
+                        "value": 5345
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 23 分鐘",
+                        "value": 4991
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 公尺",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "25.8 公里",
+                        "value": 25841
+                    },
+                    "duration": {
+                        "text": "42 分鐘",
+                        "value": 2540
+                    },
+                    "duration_in_traffic": {
+                        "text": "43 分鐘",
+                        "value": 2566
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "16.3 公里",
+                        "value": 16330
+                    },
+                    "duration": {
+                        "text": "34 分鐘",
+                        "value": 2057
+                    },
+                    "duration_in_traffic": {
+                        "text": "35 分鐘",
+                        "value": 2126
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "29.1 公里",
+                        "value": 29096
+                    },
+                    "duration": {
+                        "text": "55 分鐘",
+                        "value": 3284
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 4 分鐘",
+                        "value": 3858
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "24.5 公里",
+                        "value": 24479
+                    },
+                    "duration": {
+                        "text": "43 分鐘",
+                        "value": 2574
+                    },
+                    "duration_in_traffic": {
+                        "text": "44 分鐘",
+                        "value": 2615
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "23.9 公里",
+                        "value": 23930
+                    },
+                    "duration": {
+                        "text": "53 分鐘",
+                        "value": 3196
+                    },
+                    "duration_in_traffic": {
+                        "text": "55 分鐘",
+                        "value": 3306
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "44.5 公里",
+                        "value": 44549
+                    },
+                    "duration": {
+                        "text": "1 小時 6 分鐘",
+                        "value": 3949
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 14 分鐘",
+                        "value": 4465
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "22.9 公里",
+                        "value": 22916
+                    },
+                    "duration": {
+                        "text": "39 分鐘",
+                        "value": 2316
+                    },
+                    "duration_in_traffic": {
+                        "text": "39 分鐘",
+                        "value": 2342
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "8.8 公里",
+                        "value": 8760
+                    },
+                    "duration": {
+                        "text": "14 分鐘",
+                        "value": 811
+                    },
+                    "duration_in_traffic": {
+                        "text": "14 分鐘",
+                        "value": 858
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "56.3 公里",
+                        "value": 56259
+                    },
+                    "duration": {
+                        "text": "1 小時 19 分鐘",
+                        "value": 4745
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 15 分鐘",
+                        "value": 4519
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "25.8 公里",
+                        "value": 25845
+                    },
+                    "duration": {
+                        "text": "44 分鐘",
+                        "value": 2640
+                    },
+                    "duration_in_traffic": {
+                        "text": "45 分鐘",
+                        "value": 2694
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 公尺",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "22.8 公里",
+                        "value": 22786
+                    },
+                    "duration": {
+                        "text": "41 分鐘",
+                        "value": 2432
+                    },
+                    "duration_in_traffic": {
+                        "text": "41 分鐘",
+                        "value": 2480
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "36.4 公里",
+                        "value": 36443
+                    },
+                    "duration": {
+                        "text": "1 小時 3 分鐘",
+                        "value": 3784
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 12 分鐘",
+                        "value": 4290
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "2.9 公里",
+                        "value": 2889
+                    },
+                    "duration": {
+                        "text": "9 分鐘",
+                        "value": 523
+                    },
+                    "duration_in_traffic": {
+                        "text": "9 分鐘",
+                        "value": 553
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "41.8 公里",
+                        "value": 41824
+                    },
+                    "duration": {
+                        "text": "1 小時 10 分鐘",
+                        "value": 4224
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 12 分鐘",
+                        "value": 4331
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "49.2 公里",
+                        "value": 49202
+                    },
+                    "duration": {
+                        "text": "1 小時 15 分鐘",
+                        "value": 4515
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 28 分鐘",
+                        "value": 5294
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "4.1 公里",
+                        "value": 4057
+                    },
+                    "duration": {
+                        "text": "8 分鐘",
+                        "value": 501
+                    },
+                    "duration_in_traffic": {
+                        "text": "9 分鐘",
+                        "value": 536
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "27.9 公里",
+                        "value": 27880
+                    },
+                    "duration": {
+                        "text": "46 分鐘",
+                        "value": 2758
+                    },
+                    "duration_in_traffic": {
+                        "text": "47 分鐘",
+                        "value": 2817
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "55.1 公里",
+                        "value": 55108
+                    },
+                    "duration": {
+                        "text": "1 小時 14 分鐘",
+                        "value": 4443
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 22 分鐘",
+                        "value": 4894
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "16.4 公里",
+                        "value": 16406
+                    },
+                    "duration": {
+                        "text": "36 分鐘",
+                        "value": 2142
+                    },
+                    "duration_in_traffic": {
+                        "text": "38 分鐘",
+                        "value": 2272
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "22.9 公里",
+                        "value": 22855
+                    },
+                    "duration": {
+                        "text": "40 分鐘",
+                        "value": 2420
+                    },
+                    "duration_in_traffic": {
+                        "text": "41 分鐘",
+                        "value": 2476
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 公尺",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "14.6 公里",
+                        "value": 14631
+                    },
+                    "duration": {
+                        "text": "31 分鐘",
+                        "value": 1834
+                    },
+                    "duration_in_traffic": {
+                        "text": "41 分鐘",
+                        "value": 2454
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "21.5 公里",
+                        "value": 21493
+                    },
+                    "duration": {
+                        "text": "41 分鐘",
+                        "value": 2453
+                    },
+                    "duration_in_traffic": {
+                        "text": "42 分鐘",
+                        "value": 2548
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "19.7 公里",
+                        "value": 19672
+                    },
+                    "duration": {
+                        "text": "35 分鐘",
+                        "value": 2116
+                    },
+                    "duration_in_traffic": {
+                        "text": "44 分鐘",
+                        "value": 2660
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "34.5 公里",
+                        "value": 34485
+                    },
+                    "duration": {
+                        "text": "43 分鐘",
+                        "value": 2595
+                    },
+                    "duration_in_traffic": {
+                        "text": "54 分鐘",
+                        "value": 3253
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "19.9 公里",
+                        "value": 19931
+                    },
+                    "duration": {
+                        "text": "37 分鐘",
+                        "value": 2195
+                    },
+                    "duration_in_traffic": {
+                        "text": "37 分鐘",
+                        "value": 2246
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "41.4 公里",
+                        "value": 41374
+                    },
+                    "duration": {
+                        "text": "1 小時 8 分鐘",
+                        "value": 4096
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 13 分鐘",
+                        "value": 4404
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "52.3 公里",
+                        "value": 52334
+                    },
+                    "duration": {
+                        "text": "59 分鐘",
+                        "value": 3542
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 1 分鐘",
+                        "value": 3673
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "29.0 公里",
+                        "value": 28986
+                    },
+                    "duration": {
+                        "text": "56 分鐘",
+                        "value": 3374
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 0 分鐘",
+                        "value": 3583
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "36.3 公里",
+                        "value": 36349
+                    },
+                    "duration": {
+                        "text": "1 小時 3 分鐘",
+                        "value": 3757
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 8 分鐘",
+                        "value": 4064
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "14.8 公里",
+                        "value": 14795
+                    },
+                    "duration": {
+                        "text": "33 分鐘",
+                        "value": 1964
+                    },
+                    "duration_in_traffic": {
+                        "text": "38 分鐘",
+                        "value": 2273
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 公尺",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 分鐘",
+                        "value": 14
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "35.0 公里",
+                        "value": 34988
+                    },
+                    "duration": {
+                        "text": "1 小時 3 分鐘",
+                        "value": 3791
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 9 分鐘",
+                        "value": 4125
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "12.2 公里",
+                        "value": 12167
+                    },
+                    "duration": {
+                        "text": "29 分鐘",
+                        "value": 1751
+                    },
+                    "duration_in_traffic": {
+                        "text": "31 分鐘",
+                        "value": 1877
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "18.6 公里",
+                        "value": 18596
+                    },
+                    "duration": {
+                        "text": "27 分鐘",
+                        "value": 1643
+                    },
+                    "duration_in_traffic": {
+                        "text": "39 分鐘",
+                        "value": 2322
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "33.4 公里",
+                        "value": 33425
+                    },
+                    "duration": {
+                        "text": "59 分鐘",
+                        "value": 3533
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 5 分鐘",
+                        "value": 3883
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "7.3 公里",
+                        "value": 7339
+                    },
+                    "duration": {
+                        "text": "11 分鐘",
+                        "value": 652
+                    },
+                    "duration_in_traffic": {
+                        "text": "11 分鐘",
+                        "value": 687
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "54.8 公里",
+                        "value": 54839
+                    },
+                    "duration": {
+                        "text": "1 小時 16 分鐘",
+                        "value": 4586
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 13 分鐘",
+                        "value": 4360
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "23.6 公里",
+                        "value": 23562
+                    },
+                    "duration": {
+                        "text": "40 分鐘",
+                        "value": 2423
+                    },
+                    "duration_in_traffic": {
+                        "text": "41 分鐘",
+                        "value": 2455
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "2.8 公里",
+                        "value": 2787
+                    },
+                    "duration": {
+                        "text": "6 分鐘",
+                        "value": 346
+                    },
+                    "duration_in_traffic": {
+                        "text": "6 分鐘",
+                        "value": 356
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "20.5 公里",
+                        "value": 20503
+                    },
+                    "duration": {
+                        "text": "37 分鐘",
+                        "value": 2216
+                    },
+                    "duration_in_traffic": {
+                        "text": "37 分鐘",
+                        "value": 2242
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "34.2 公里",
+                        "value": 34160
+                    },
+                    "duration": {
+                        "text": "59 分鐘",
+                        "value": 3568
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 9 分鐘",
+                        "value": 4115
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 公尺",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "39.5 公里",
+                        "value": 39541
+                    },
+                    "duration": {
+                        "text": "1 小時 7 分鐘",
+                        "value": 4008
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 10 分鐘",
+                        "value": 4183
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "46.9 公里",
+                        "value": 46919
+                    },
+                    "duration": {
+                        "text": "1 小時 12 分鐘",
+                        "value": 4298
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 25 分鐘",
+                        "value": 5108
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1.8 公里",
+                        "value": 1774
+                    },
+                    "duration": {
+                        "text": "5 分鐘",
+                        "value": 285
+                    },
+                    "duration_in_traffic": {
+                        "text": "5 分鐘",
+                        "value": 286
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "56.5 公里",
+                        "value": 56453
+                    },
+                    "duration": {
+                        "text": "1 小時 5 分鐘",
+                        "value": 3906
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 9 分鐘",
+                        "value": 4162
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "42.4 公里",
+                        "value": 42418
+                    },
+                    "duration": {
+                        "text": "50 分鐘",
+                        "value": 3001
+                    },
+                    "duration_in_traffic": {
+                        "text": "53 分鐘",
+                        "value": 3205
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "24.9 公里",
+                        "value": 24866
+                    },
+                    "duration": {
+                        "text": "51 分鐘",
+                        "value": 3060
+                    },
+                    "duration_in_traffic": {
+                        "text": "54 分鐘",
+                        "value": 3225
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "40.4 公里",
+                        "value": 40447
+                    },
+                    "duration": {
+                        "text": "1 小時 6 分鐘",
+                        "value": 3933
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 10 分鐘",
+                        "value": 4229
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "18.9 公里",
+                        "value": 18892
+                    },
+                    "duration": {
+                        "text": "36 分鐘",
+                        "value": 2140
+                    },
+                    "duration_in_traffic": {
+                        "text": "41 分鐘",
+                        "value": 2475
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "13.5 公里",
+                        "value": 13542
+                    },
+                    "duration": {
+                        "text": "23 分鐘",
+                        "value": 1385
+                    },
+                    "duration_in_traffic": {
+                        "text": "30 分鐘",
+                        "value": 1773
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "39.1 公里",
+                        "value": 39085
+                    },
+                    "duration": {
+                        "text": "1 小時 6 分鐘",
+                        "value": 3967
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 11 分鐘",
+                        "value": 4255
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 公尺",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 分鐘",
+                        "value": 32
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "20.5 公里",
+                        "value": 20537
+                    },
+                    "duration": {
+                        "text": "25 分鐘",
+                        "value": 1515
+                    },
+                    "duration_in_traffic": {
+                        "text": "31 分鐘",
+                        "value": 1880
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "37.5 公里",
+                        "value": 37522
+                    },
+                    "duration": {
+                        "text": "1 小時 2 分鐘",
+                        "value": 3708
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 8 分鐘",
+                        "value": 4062
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "73.9 公里",
+                        "value": 73874
+                    },
+                    "duration": {
+                        "text": "1 小時 18 分鐘",
+                        "value": 4696
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 20 分鐘",
+                        "value": 4796
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "59.8 公里",
+                        "value": 59798
+                    },
+                    "duration": {
+                        "text": "1 小時 3 分鐘",
+                        "value": 3807
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 5 分鐘",
+                        "value": 3903
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "39.3 公里",
+                        "value": 39297
+                    },
+                    "duration": {
+                        "text": "1 小時 13 分鐘",
+                        "value": 4376
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 18 分鐘",
+                        "value": 4660
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "50.6 公里",
+                        "value": 50629
+                    },
+                    "duration": {
+                        "text": "1 小時 19 分鐘",
+                        "value": 4742
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 26 分鐘",
+                        "value": 5157
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "29.1 公里",
+                        "value": 29075
+                    },
+                    "duration": {
+                        "text": "49 分鐘",
+                        "value": 2948
+                    },
+                    "duration_in_traffic": {
+                        "text": "55 分鐘",
+                        "value": 3271
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "18.7 公里",
+                        "value": 18670
+                    },
+                    "duration": {
+                        "text": "29 分鐘",
+                        "value": 1734
+                    },
+                    "duration_in_traffic": {
+                        "text": "41 分鐘",
+                        "value": 2457
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "47.8 公里",
+                        "value": 47837
+                    },
+                    "duration": {
+                        "text": "1 小時 16 分鐘",
+                        "value": 4537
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 28 分鐘",
+                        "value": 5296
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "15.2 公里",
+                        "value": 15226
+                    },
+                    "duration": {
+                        "text": "30 分鐘",
+                        "value": 1782
+                    },
+                    "duration_in_traffic": {
+                        "text": "33 分鐘",
+                        "value": 1972
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 公尺",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 分鐘",
+                        "value": 15
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "47.7 公里",
+                        "value": 47705
+                    },
+                    "duration": {
+                        "text": "1 小時 15 分鐘",
+                        "value": 4517
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 23 分鐘",
+                        "value": 4981
+                    },
+                    "status": "OK"
+                }
+            ]
+        },
+        {
+            "elements": [
+                {
+                    "distance": {
+                        "text": "9.1 公里",
+                        "value": 9084
+                    },
+                    "duration": {
+                        "text": "14 分鐘",
+                        "value": 834
+                    },
+                    "duration_in_traffic": {
+                        "text": "15 分鐘",
+                        "value": 885
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "56.6 公里",
+                        "value": 56584
+                    },
+                    "duration": {
+                        "text": "1 小時 19 分鐘",
+                        "value": 4768
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 16 分鐘",
+                        "value": 4534
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "22.9 公里",
+                        "value": 22906
+                    },
+                    "duration": {
+                        "text": "40 分鐘",
+                        "value": 2406
+                    },
+                    "duration_in_traffic": {
+                        "text": "41 分鐘",
+                        "value": 2452
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "4.1 公里",
+                        "value": 4060
+                    },
+                    "duration": {
+                        "text": "8 分鐘",
+                        "value": 495
+                    },
+                    "duration_in_traffic": {
+                        "text": "9 分鐘",
+                        "value": 523
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "19.8 公里",
+                        "value": 19847
+                    },
+                    "duration": {
+                        "text": "37 分鐘",
+                        "value": 2199
+                    },
+                    "duration_in_traffic": {
+                        "text": "37 分鐘",
+                        "value": 2225
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "33.5 公里",
+                        "value": 33504
+                    },
+                    "duration": {
+                        "text": "59 分鐘",
+                        "value": 3551
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 9 分鐘",
+                        "value": 4141
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "2.7 公里",
+                        "value": 2698
+                    },
+                    "duration": {
+                        "text": "9 分鐘",
+                        "value": 529
+                    },
+                    "duration_in_traffic": {
+                        "text": "9 分鐘",
+                        "value": 567
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "38.9 公里",
+                        "value": 38885
+                    },
+                    "duration": {
+                        "text": "1 小時 7 分鐘",
+                        "value": 3991
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 9 分鐘",
+                        "value": 4168
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "46.3 公里",
+                        "value": 46263
+                    },
+                    "duration": {
+                        "text": "1 小時 11 分鐘",
+                        "value": 4281
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 小時 25 分鐘",
+                        "value": 5128
+                    },
+                    "status": "OK"
+                },
+                {
+                    "distance": {
+                        "text": "1 公尺",
+                        "value": 0
+                    },
+                    "duration": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "duration_in_traffic": {
+                        "text": "1 分鐘",
+                        "value": 0
+                    },
+                    "status": "OK"
+                }
+            ]
+        }
+    ],
+    "status": "OK"
+}
