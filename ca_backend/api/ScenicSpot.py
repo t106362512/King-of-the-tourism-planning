@@ -29,10 +29,10 @@ class ScenicSpot(Resource):
             "IdList":["C1_382000000A_402683", "C1_376430000A_000136"]
         }
         """
+        RETURN_FIELD = "Location"
         parser = reqparse.RequestParser()
         parser.add_argument('IdList', type=str, default=None, action='append')
         args = parser.parse_args()
-        RETURN_FIELD = "Location"
         result_dict = json.loads(ScenicSpotInfo.objects(Id__in=args['IdList']).only(RETURN_FIELD).to_json())
         result = {'data': result_dict}
         return result
