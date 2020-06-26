@@ -5,11 +5,15 @@ from flask_mongoengine import MongoEngine
 from flask_bootstrap import Bootstrap
 from .api.ScenicSpot import ScenicSpot
 from .api.STAIOT import STALoc
+from .api.RoutePlanning import RoutePlanning
 from .views.demo import demo
 from .views.datatable import datable
+from .views.RoutePlanning import RoutePlanning_bp
+from flask_marshmallow import Marshmallow
 import os
 
 db = MongoEngine()
+ma = Marshmallow()
 cache = Cache(config={'CACHE_TYPE': 'simple'})
 
 def create_app(config_name='development'):
@@ -20,9 +24,12 @@ def create_app(config_name='development'):
     api = Api(app)
     db.init_app(app)
     cache.init_app(app)
+    ma.init_app(app)
     api.add_resource(ScenicSpot, '/api/scenice', endpoint='api.scenice') # end point for jinja2 url_for using
     api.add_resource(STALoc, '/api/location', endpoint='api.stalocation')
+    api.add_resource(RoutePlanning, '/api/RoutePlanning')
     app.register_blueprint(demo, url_prefix='/site')
-    app.register_blueprint(datable)
+    app.register_blueprint(datable, url_prefix='/databale')
+    app.register_blueprint(RoutePlanning_bp)
 
     return app

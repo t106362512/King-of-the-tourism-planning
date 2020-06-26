@@ -114,4 +114,3 @@ gmap.plot(latitude_list, longitude_list,
 
 # Pass the absolute path
 gmap.draw("map.html")
-gmap()

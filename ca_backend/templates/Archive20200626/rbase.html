@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<script>
+
+    const sceniceData = async () => {
+        await fetch("{{ url_for('api.scenice') | safe}}", { method: 'get' })
+        .then(res => {
+            return res.json();
+        })
+        .then(
+            jsonData => {
+                console.log(jsonData);
+                var frag = document.createDocumentFragment();
+                var res = jsonData.data;
+                for (i = 0; i < res.length; i++) {
+                    var option = document.createElement("OPTION");
+                    option.textContent = res[i].Name;
+                    option.value = res[i].Location;
+                    frag.appendChild(option);
+                }
+                document.getElementById('SciList').appendChild(frag);
+            }
+        )
+        .catch(err => { console.log(err)});
+    };
+
+    $(document).ready(function () {
+
+        sceniceData();
+
+        $("#listinput").on("keyup", function () {
+            console.log('click');
+        });
+    });
+</script>
+
+<div class="container" style="height:auto; display:inline">
+    選擇景點: <input type="text" id="listinput" list="SciList" /><br />
+    <datalist id="SciList">
+        
+    </datalist>
+</div>
+
+{% include "RoutePlanning.html" %}
+
+{% endblock %}

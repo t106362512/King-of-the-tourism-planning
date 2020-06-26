@@ -1,94 +1,206 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Flask-DataTables</title>
-    <meta name="description" content="This is a Flask (Python microframework) use Datatables.js Ajax source application.">
-    <meta name="author" content="rosickey">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.min.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-	
-	<script src="{{ url_for('static', filename='js/jquery-3.5.1.min.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
-</head>
+{% extends "base.html" %}
 
-<script>
-	$(document).ready(function() {
+{% block PageCustomStyles %}
+	<link href="{{url_for('static', filename='vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+	<link href="{{url_for('static', filename='vendor/datatables/select.dataTables.min.css')}}" rel="stylesheet">
+	<link href="{{url_for('static', filename='vendor/datatables/buttons.dataTables.min.css')}}" rel="stylesheet">
 
-		$.ajax({
-			url: "{{ url_for('api.scenice', Location='121.2977,24.9433', Distance='0.06') | safe}}",
-			type: 'get',
-			success: function (response) {
-				console.log(response)
+	<style>
+	.popover {
+		max-width: 600px;
+	}
+	</style>
 
-				var options = '';
-				var res = response.data;
-				for (i = 0; i < res.length; i++) {
-					options+= '<option value="' + res[i].Name + '" >';
-				  }
-				  document.getElementById('SciList').innerHTML = options;
-			},
-			error: function (error) {
-				console.log('error')
-			}
+{% endblock %}
 
-		});
+{% block content %}
 
-		$('#example').dataTable( {
-			"select": true,
-			"Dom": "<'row-fluid'<'span6 toolbar'><'span6'>r>t<'row-fluid'<'span6'f><'span6'p>>",
-			"Processing": true,
-			"jQueryUI": true,
-			"ajax": {
-				"url": "{{ url_for('api.scenice', Location='121.2977,24.9433', Distance='0.06') | safe}}",
-				"data": function ( d ) {
-					d.extra_search = $('#extra').val();
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+
+		<div class="row">
+
+			<div class="col-sm-4">
+				<!-- Content Row -->
+				<div class="card shadow mb-4">
+
+					<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+						<h6 class="m-0 font-weight-bold text-primary">目前選擇的景點</h6>
+					</div>
+
+					<div class="card-body">
+						<div class="table-responsive">
+
+							<table class="table table-striped table-bordered table-sm" id="dataTable_select" width="100%"
+								cellspacing="0">
+								<thead>
+									<tr>
+										<th>景點名稱</th>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="col-sm-8">
+				<!-- DataTales Example -->
+				<div class="card shadow mb-4">
+					<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+						<div>
+							<h2>所有景點</h2>
+						</div>
+					</div>
+
+					<div class="card-body">
+						<div class="tab-content" id="myTabContent">
+
+							<table class="table table-striped table-bordered table-sm" id="datatable" width="100%" cellspacing="0">
+								<thead>
+									<tr>
+										<th style="width:5%">Action</th>
+										{% for col in columns %}
+										<th>{{ col }}</th>
+										{% endfor %}
+									</tr>
+								</thead>
+							</table>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+    </div>
+    <!-- /.container-fluid -->
+
+{% endblock %}
+
+{% block PageCustomScripts %}
+	<!-- Page level plugins -->
+	<script src="{{url_for('static', filename='vendor/datatables/jquery.dataTables.min.js')}}"></script>
+	<script src="{{url_for('static', filename='vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+
+	<script src="{{url_for('static', filename='vendor/datatables/dataTables.select.min.js')}}"></script>
+	<script src="{{url_for('static', filename='vendor/datatables/dataTables.buttons.min.js')}}"></script>
+
+	<script>
+
+		$(document).ready(function() {
+			var selected_obj = {};
+
+			var myTable = $('#datatable').DataTable( {
+				"Dom": "<'row-fluid'<'span6 toolbar'><'span6'>r>t<'row-fluid'<'span6'f><'span6'p>>",
+				"processing": true,
+				"ajax": {
+					"url": "{{ url_for('api.scenice', Location='121.2977,24.9433', Distance='0.06') | safe}}",
+					"data": function ( d ) {
+						d.extra_search = $('#extra').val();
+					}
+				},
+				"rowId": "Id",
+				oLanguage: {
+					"sLengthMenu": "每頁顯示 _MENU_ 條",
+					// "sProcessing": "<img src='" + imgUrl + "'/><span>&nbsp;&nbsp;Loading...</span>",
+					"sInfo": "從 _START_ 到 _END_, 共 _TOTAL_ 條記錄",
+					"sInfoEmpty": "",
+					"sGroupActions": "_TOTAL_ records selected:  ",
+					"sAjaxRequestGeneralError": "未能連線伺服器，請重試！",
+					"sEmptyTable": "未找到相關記錄",
+					"sZeroRecords": "共 0 條記錄",
+					"sInfoFiltered": "(從 _MAX_ 條資料中檢索)",
+					"oPaginate": {
+						"sPrevious": "上一頁",
+						"sNext": "下一頁",
+						"sPage": "頁",
+						"sPageOf": "of"
+					},
+					"sSearch": "搜尋：",
+				},
+				"drawCallback": function (oSettings) {
+                    $('[data-toggle="popover"]').popover({
+                        html: true,
+                        trigger: 'focus',
+                        placement: 'auto'
+                    });
+
+					$('.Select_item').on('click',function(){
+						console.log(this);
+
+					});
+
+				},
+                select: {
+                    style: 'mutil',
+                    selector: 'td:first-child'
+                },
+				"columns":[
+					{
+                        orderable: false,
+                        className: 'select-checkbox',
+                        data: null,
+						defaultContent: ""
+                    },
+					{
+						data:"Name"
+					},
+					{
+						data:"Toldescribe",
+						render: function ( data, type, row, meta ) {
+							return '<button tabindex="0" style="width: 100%;" class="btn btn-sm btn-success" data-toggle="popover" title="'+row.Name+'" data-content="' + data + '">Show</button>';
+						}
+					},
+					{
+						data:"Add"
+					},
+					{
+						data:"Tel"
+					}
+				],
+				order: [[1, 'asc']],
+                //"rowCallback": function (row, data) {
+					//如果用 server side 就要用這個 select 顯示才會正常
+					//console.log(data);
+                    //if ($.inArray(data., selected) !== -1) {
+                        //table_personal.rows(row).select();
+                        // $(row).addClass('selected');
+                    //}
+                //}
+			});
+
+			$('#datatable tbody').on('click', '.select-checkbox', function () {
+
+				var name = $(this).parent('tr').find("td:eq(1)").text()
+				var id = myTable.row($(this).parent('tr')).id();
+				console.log('Add id = ' + id + 'name = ' + name);
+
+				if (!(id in selected_obj)) {
+					if (Object.keys(selected_obj).length == 10){
+						alert('你已經選了10個地點');
+						return false;
+					}else{
+						selected_obj[id]=name;
+						$("#dataTable_select tbody").append('<tr id="select_'+id+'"><td>' + name + '</td></tr>');
+					}
+				} else {
+					delete selected_obj[id];
+					$('#select_'+id).remove();
 				}
-			},
-			"columns":[
-				{"data":"Id"},
-				{"data":"Name"},
-				{"data":"Description"},
-				{"data":"Tel"}
-			]
-		});
-		$("#listinput").on("click", function () {
-			console.log('click')
+				console.log('selected_obj');
+				console.log(selected_obj);
+
+				
+            });
 
 		});
-	} );
-</script>
 
-<body>
-	<div class="container" style="width:50%; height:auto; float:left; display:inline">
-		選擇城市: <input type="text" id="listinput" list="SciList" /><br />
-		<datalist id="SciList">
-		</datalist>
-	</div>
-	<div  style="width:50%; height:auto; float:left; display:inline" class="container">
-	<table class='table' id='example'>
-		<thead>
-			<tr>
-				{% for col in columns %}
-				<th>{{ col }}</th>
-				{% endfor %}
-			</tr>
-		</thead>
-	</table>
-	</div>
-</body>
+	</script>
 
-<footer class="footer">
-	<div class="container">
-    <ul class="footer-links">
-        <li><a href='https://github.com/imwilsonxu/flask-datatables'>About</a></li>
-	</ul>
-	</div>
-</footer>
-
-</html>
+{% endblock %}

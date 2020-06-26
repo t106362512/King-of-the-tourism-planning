@@ -22,7 +22,20 @@ class ScenicSpot(Resource):
         return result
 
     def post(self):
-        pass
+        # pylint: disable=no-member
+        """
+        Input list in json body.
+        {
+            "IdList":["C1_382000000A_402683", "C1_376430000A_000136"]
+        }
+        """
+        parser = reqparse.RequestParser()
+        parser.add_argument('IdList', type=str, default=None, action='append')
+        args = parser.parse_args()
+        RETURN_FIELD = "Location"
+        result_dict = json.loads(ScenicSpotInfo.objects(Id__in=args['IdList']).only(RETURN_FIELD).to_json())
+        result = {'data': result_dict}
+        return result
 
     def put(self):
         return ScenicSpotInfo.insert_all()
