@@ -1,5 +1,6 @@
-from sys import maxsize
 from pprint import pprint
+from sys import maxsize
+import numpy as np
 
 # implementation of traveling Salesman Problem
 
@@ -131,4 +132,41 @@ class TSP(TSPMatrix):
         tsp(graph, v, 0, n, 1, 0)
 
         return min(answer)
-        
+
+    def two_opt_ans(self, start=0, **kwargs):
+
+        graph = kwargs.get('graph', self.matrix)
+
+        def cost_change(cost_mat, n1, n2, n3, n4):
+            return cost_mat[n1][n3] + cost_mat[n2][n4] - cost_mat[n1][n2] - cost_mat[n3][n4]
+
+        def cost(cost_mat, route):
+            return cost_mat[np.roll(route, 1), route].sum()
+
+        def two_opt(route, cost_mat):
+            best = route
+            improved = True
+            while improved:
+                improved = False
+                for i in range(1, len(route) - 2):
+                    for j in range(i + 1, len(route)):
+                        if j - i == 1:
+                            continue
+                        if cost_change(cost_mat, best[i - 1], best[i], best[j - 1], best[j]) < 0:
+                            best[i:j] = best[j - 1:i - 1:-1]
+                            improved = True
+                route = best
+            return best
+
+        nodes = len(graph)
+        cost_np_matrix = np.array(graph)
+        init_route = list(range(nodes))
+        cost_mat = cost_np_matrix.T
+        np.fill_diagonal(cost_mat, 0)
+        cost_mat = list(cost_mat)
+        best_route = two_opt(init_route, cost_mat)
+        best_route_cost = cost(cost_np_matrix, best_route)
+        print(f'Best Route: {best_route}')
+        print(f'Best Route Cost: {best_route_cost}')
+        order_list = [self.map_list[i] for i in best_route] if self.map_list else best_route
+        return best_route_cost, order_list
