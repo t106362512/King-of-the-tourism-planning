@@ -26,7 +26,7 @@ def two_opt(route, cost_mat):
 
 
 if __name__ == '__main__':
-    nodes = 10
+    nodes = 50
     init_route = list(range(nodes))
     # print(init_route)
     cost_np_matrix = np.random.randint(100, size=(nodes, nodes))
@@ -45,6 +45,6 @@ if __name__ == '__main__':
     np.fill_diagonal(cost_mat, 0)
     cost_mat = list(cost_mat)
     best_route = two_opt(init_route, cost_mat)
-    best_route_cost = cost(cost_np_matrix, best_route)
+    # best_route_cost = cost(cost_np_matrix, best_route)
     print(f'Best Route: {best_route}')
-    print(f'Best Route Cost: {best_route_cost}')
+    # print(f'Best Route Cost: {best_route_cost}')

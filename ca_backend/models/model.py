@@ -228,6 +228,46 @@ class Datastream(me.Document):
         kwargs = {str(key).replace('.', '_').replace('@', '_'): value for key, value in kwargs.items()}
         super(Datastream, self).__init__(*args, **kwargs)
 
+
+    @classmethod
+    def get_station_info(cls, station:str, location:str, **kwargs):
+
+        url = kwargs.get('url', f'https://sta.ci.taiwan.gov.tw/{station}/v1.0/Datastreams')
+        loc = location.replace(',',' ')
+        pa = {
+            "$expand": "Observations($orderby=phenomenonTime desc;$top=1)",
+            "$filter": f"st_within(Thing/Locations/location, geography'POINT ({loc})')"
+        }
+        data_content = json.loads(requests.get(url, params=pa).text)
+        infos = data_content['value']
+        bulk = cls._get_collection().initialize_ordered_bulk_op()
+
+
+        for info in infos:
+            obs = [Observation(**i).to_mongo() for i in info.pop('Observations')]
+            ci_datastream_model = cls(**info)
+            ci_datastream_model.station = station
+            ci_datastream_model.Observations.append(obs)
+            ci_datastream_model.Location = tuple(map(float, location.split(',')))
+            # bulk.find({"_iot_selfLink": ci_datastream_model['_iot_selfLink']}).upsert().update_one({'$setOnInsert':{'Observations': obs}})
+            bulk.find({ "_iot_selfLink": ci_datastream_model['_iot_selfLink'] }).upsert().replace_one(ci_datastream_model.to_mongo())
+        try:
+            bulk.execute()
+        except BulkWriteError as bwe:
+            logging.error(bwe.details)
+            raise
+
+        if '@iot.nextLink' in data_content:
+            cls.insert_all(station, location, url=data_content['@iot.nextLink'])
+
+        
+        query = {
+            'name__icontains': 'NOW',
+            'Location__near': tuple(map(float, location.split(',')))
+        }
+
+        return json.loads(cls.objects(**query).all().to_json())
+
     @classmethod
     def insert_all(cls, station:str, location:str, **kwargs):
 

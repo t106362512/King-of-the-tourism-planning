@@ -20,15 +20,29 @@
 
 		<div class="row">
 
-			<div class="col-sm-4">
+			<div class="col-sm-3">
 				<!-- Content Row -->
-				<div class="card shadow mb-4">
+				<div id="selected_card" class="card shadow mb-4">
 
 					<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-						<h6 class="m-0 font-weight-bold text-primary">目前選擇的景點</h6>
+						<div>
+							<h6 class="m-0 font-weight-bold text-primary">目前選擇的景點</h6>
+						</div>
+						<div>
+							<form id="form_selected" method="POST" action="{{url_for('RoutePlanning.result') | safe}}">
+
+								<input id="selected" type="hidden" name="selected[]">
+
+								<button id="" type="submit" class="table_buttonPersonal btn btn-outline-danger" title="">
+									<i class="fas fa-sign-out-alt"></i> 確認送出
+								</button>
+							</form>
+						</div>
 					</div>
 
 					<div class="card-body">
+						<p class="card-text">目前已選擇：<span id="selected_num" style="color:red"></span>個景點。</p>
+						<p class="card-text">注意：最多可選10個景點，還可以選 <span id="left_selected_num" style="color:red"></span> 個景點。</p>
 						<div class="table-responsive">
 
 							<table class="table table-striped table-bordered table-sm" id="dataTable_select" width="100%"
@@ -48,7 +62,7 @@
 				</div>
 			</div>
 
-			<div class="col-sm-8">
+			<div class="col-sm-9">
 				<!-- DataTales Example -->
 				<div class="card shadow mb-4">
 					<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -96,16 +110,20 @@
 		$(document).ready(function() {
 			var selected_obj = {};
 
+			$('#selected_num').text(Object.keys(selected_obj).length);
+			$('#left_selected_num').text(10-Object.keys(selected_obj).length);
+
 			var myTable = $('#datatable').DataTable( {
-				"Dom": "<'row-fluid'<'span6 toolbar'><'span6'>r>t<'row-fluid'<'span6'f><'span6'p>>",
 				"processing": true,
+				lengthMenu: [[10, 25, 50, 75, 100, -1], [10, 25, 50, 75, 100, 'All']],
+				"rowId": "Id",
 				"ajax": {
 					"url": "{{ url_for('api.scenice', Location='121.2977,24.9433', Distance='0.06') | safe}}",
+					//"url": "{{ url_for('api.scenice') | safe}}",
 					"data": function ( d ) {
 						d.extra_search = $('#extra').val();
 					}
 				},
-				"rowId": "Id",
 				oLanguage: {
 					"sLengthMenu": "每頁顯示 _MENU_ 條",
 					// "sProcessing": "<img src='" + imgUrl + "'/><span>&nbsp;&nbsp;Loading...</span>",
@@ -130,12 +148,6 @@
                         trigger: 'focus',
                         placement: 'auto'
                     });
-
-					$('.Select_item').on('click',function(){
-						console.log(this);
-
-					});
-
 				},
                 select: {
                     style: 'mutil',
@@ -168,7 +180,7 @@
                 //"rowCallback": function (row, data) {
 					//如果用 server side 就要用這個 select 顯示才會正常
 					//console.log(data);
-                    //if ($.inArray(data., selected) !== -1) {
+                    //if ($.inArray(data.no, selected) !== -1) {
                         //table_personal.rows(row).select();
                         // $(row).addClass('selected');
                     //}
@@ -196,8 +208,28 @@
 				console.log('selected_obj');
 				console.log(selected_obj);
 
-				
+				$('#selected_num').text(Object.keys(selected_obj).length);
+				$('#left_selected_num').text(10-Object.keys(selected_obj).length);
+
             });
+
+			$(window).scroll(function(){
+				var newPos = $(document).scrollTop(); 
+				$('#selected_card').css({top:newPos}); 
+			});
+
+			$('#form_selected').submit(function(event){
+				console.log(event);
+				console.log('submit');
+				console.log('selected_obj');
+				console.log(selected_obj);
+
+				//$('#selected').val(JSON.stringify(selected_obj));
+				$('#selected').val(JSON.stringify(Object.keys(selected_obj)));
+
+				
+				//return false;
+			});
 
 		});
 
