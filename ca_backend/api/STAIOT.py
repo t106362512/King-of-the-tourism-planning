@@ -1,6 +1,7 @@
 from flask_restful import Resource, reqparse
 from ..models.model import CILocation, Datastream
 from ..models.database import Database
+import pymongo
 import requests
 import json
 
@@ -35,7 +36,7 @@ class STALoc(Resource):
         # ]
 
         parser = reqparse.RequestParser()
-        parser.add_argument('station', type=str, default="STA_Rain")
+        parser.add_argument('Station', type=str, default="STA_Rain")
         parser.add_argument('Location', type=str, default=None, help='plz type like the 121.297187,24.943325')
         parser.add_argument('Distance', type=str, default=None)
         args = parser.parse_args()
@@ -43,38 +44,34 @@ class STALoc(Resource):
         return result
 
     def post(self):
+        # pylint: disable=no-member
         # 1. 根據 get 得到的 coordinates (121.5359,25.2903) 後,再將該資訊打進以下網址的 Location
         # 2. 可得到相關資訊
         # http://127.0.0.1:5000/api/location?Location=121.5359,25.2903
         parser = reqparse.RequestParser()
         parser.add_argument('url', type=str, default=None)
-        parser.add_argument('station', type=str, default="STA_Rain")
+        parser.add_argument('Station', type=str, default='STA_Rain')
         parser.add_argument('Location', type=str, default=None, required=True, help='plz type like the 121.4946,24.7783')
         args = parser.parse_args()
-        station = args['station']
+        station = args['Station']
         location = args['Location']
         # return Datastream.insert_all(station, location)
-        return Datastream.get_station_info(station, location)
-
-
+        try:
+            return Datastream.get_station_info(station, location)
+        except pymongo.errors.InvalidOperation as e:
+            if(CILocation.objects(station__in=station).count() < 0):
+                CILocation.insert_all(station)
+                return Datastream.get_station_info(station, location)
+            else:
+                return {'data': 'error'}
 
     def put(self):
         parser = reqparse.RequestParser()
         parser.add_argument('url', type=str, default=None)
         parser.add_argument('station', type=str, default='STA_Rain')
         args = parser.parse_args()
-        station = args['station']
-        # pa = {
-        #     "$expand": "Thing,Thing/Locations,Observations",
-        #     "$filter": "st_equals(Thing/Locations/location,geography'POINT(121.7601 25.1292)')",
-        #     "$top": 3
-        # }
-        # content = requests.get(args['url'], params=pa).text
-        # result = FullDatastream().loads(content).data
-        # Database.save_to_db(result)
-        # return result
+        station = args['Station']
         return CILocation.insert_all(station)
-        # return CILocation.insert_all(station)
 
     def delete(self):
         result = CILocation.delete_all()

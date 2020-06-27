@@ -23,8 +23,10 @@ def result():
            [121.50055, 25.06498],
            [121.44421, 24.97271],
            [121.53531, 25.29261]]
-
-    print(request.form.getlist('selected[]'))
+    # req = request
+    # print(request.values['selected'])
+    # print(request.form.getlist('selected[]'))
+    json.loads(request.values['selected'])
 
     # result_dict = json.loads(ScenicSpotInfo.objects(Id__in=args['IdList']).only(RETURN_FIELD).to_json())
     min_path_length, min_path_list, gmp = RoutePlanning().get_shortest_map(localtion_list=origins)

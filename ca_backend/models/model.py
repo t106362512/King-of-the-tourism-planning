@@ -123,7 +123,7 @@ class CILocation(me.Document):
         'collection': 'ci_location',
         'indexes': [
             {'fields': ['_iot_selfLink'], 'unique': True}, 
-            [("location", "2dsphere")] 
+            # [("location", "2dsphere")] 
         ]
     }
 
@@ -133,8 +133,9 @@ class CILocation(me.Document):
         super(CILocation, self).__init__(*args, **kwargs)
     
     @classmethod
-    def get(cls, args:dict):
+    def get(cls, args:dict) -> dict:
         raw_query = {
+            'station__icontains': args['Station'] if 'Station' in args else None,
             'location__geo_within_center': [list(map(float, args['Location'].split(','))), float(args['Distance'])] if args['Location'] and args['Distance'] else None,
             # 'location__geo_within_sphere': [list(map(float, args['Location'].split(','))), float(args['Distance'])] if args['Location'] and args['Distance'] else None
         }
@@ -262,7 +263,7 @@ class Datastream(me.Document):
 
         
         query = {
-            'name__icontains': 'NOW',
+            # 'name__icontains': 'NOW',
             'Location__near': tuple(map(float, location.split(',')))
         }
 
