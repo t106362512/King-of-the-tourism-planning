@@ -27,10 +27,13 @@ class RoutePlanning(Resource):
 
     def post(self, **kwargs):
         # pylint: disable=no-member
+        # import pdb; pdb.set_trace()
         parser = reqparse.RequestParser()
         parser.add_argument('Location', type=str, default=None, action='append', help='plz type like the ["121.297187,24.943325"]')
         parser.add_argument('Id', type=str, default=None, action='append', help='plz type like the ["C1_313020000G_000026"]')
         raw_args = kwargs.get('args_dict', parser.parse_args())
+        print(raw_args)
+
         Inside = 'Location' if raw_args['Location'] else 'Id'
         stations = ['STA_AirQuality_v2', 'STA_Rain']
         q = Queue()

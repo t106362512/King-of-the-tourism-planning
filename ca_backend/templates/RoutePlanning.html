@@ -109,6 +109,21 @@
 				var IdList = {{id_list| tojson}};
 				console.log(IdList);
 				console.log({'Id': IdList});
+				var res_json = {};
+
+				$.ajax({
+					type: 'POST',
+					url: "{{ url_for('api.RoutePlanning') | safe}}",
+					dataType: 'json',
+					data: {'Id': IdList},
+					traditional: true,
+					success: res =>{
+						res_json = res
+						console.log(res_json);
+					}
+				  });
+
+				
 	
 				var myTable = $('#datatable').DataTable({
 					"processing": true,
@@ -118,7 +133,10 @@
 						dataType: "json",
 						contentType: "application/json",
 						// ISSUE
-						//data: {'Id': ["C1_376430000A_000137", "C1_376430000A_000505", "C1_376430000A_001490"]}
+						//data: JSON.stringify({"Id": ["C1_376430000A_000505", "C1_376430000A_001490"]}),
+						//data: {data: JSON.stringify([{"Id": "C1_376430000A_000505"}, {"Id": "C1_376430000A_001490"}])}
+						data: {"Id": IdList.join(',')},
+						//traditional: true
 					},
 					"drawCallback": function (oSettings) {
 						$('[data-toggle="popover"]').popover({
