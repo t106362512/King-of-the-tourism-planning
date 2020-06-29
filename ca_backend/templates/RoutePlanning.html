@@ -106,7 +106,7 @@
 				// https://50aabc6d-45ac-45e3-bcc4-c8c53cd2d7c0.mock.pstmn.io/api/RoutePlanning
 				console.log('paths');
 				console.log('{{paths}}');
-				var IdList = {{id_list| tojson}};
+				var IdList = JSON.parse("{{id_list| tojson}}");
 				console.log(IdList);
 				console.log({'Id': IdList});
 				var res_json = {};
