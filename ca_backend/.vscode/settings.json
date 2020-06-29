@@ -12,5 +12,5 @@
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
     "python.testing.promptToConfigure": false,
-    "python.pythonPath": "/Users/chia/.local/share/virtualenvs/code-o9wILsh8/bin/python"
+    "python.pythonPath": "/home/ccw/.local/share/virtualenvs/computer_algorithm-Vgjq7en0/bin/python"
 }

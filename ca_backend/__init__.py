@@ -2,6 +2,7 @@ from flask import Flask
 from flask_restful import Api
 from flask_caching import Cache
 from flask_mongoengine import MongoEngine
+from flask_cors import CORS
 from flask_bootstrap import Bootstrap
 from .api.ScenicSpot import ScenicSpot
 from .api.STAIOT import STALoc
@@ -17,6 +18,7 @@ db = MongoEngine()
 cache = Cache(config={'CACHE_TYPE': 'simple'})
 
 def create_app(config_name='development'):
+    # pylint: disable=no-member
 
     app = Flask(__name__)
     app.config["MONGODB_SETTINGS"] = {'DB': os.getenv('MONGODB_DB'), 'host': os.getenv('MONGODB_CONNECTIONSTRING')}
@@ -27,9 +29,12 @@ def create_app(config_name='development'):
     # ma.init_app(app)
     api.add_resource(ScenicSpot, '/api/scenice', endpoint='api.scenice') # end point for jinja2 url_for using
     api.add_resource(STALoc, '/api/location', endpoint='api.stalocation')
-    api.add_resource(RoutePlanning, '/api/RoutePlanning')
+    api.add_resource(RoutePlanning, '/api/RoutePlanning', endpoint='api.RoutePlanning')
     app.register_blueprint(demo, url_prefix='/site')
     app.register_blueprint(datable, url_prefix='/databale')
     app.register_blueprint(RoutePlanning_bp)
+    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+    
+
 
     return app

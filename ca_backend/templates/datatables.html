@@ -31,7 +31,7 @@
 						<div>
 							<form id="form_selected" method="POST" action="{{url_for('RoutePlanning.result') | safe}}">
 
-								<input id="selected" type="hidden" name="selected">
+								<!-- <input id="selected" type="hidden" name="selected[]"> -->
 
 								<button id="" type="submit" class="table_buttonPersonal btn btn-outline-danger" title="">
 									<i class="fas fa-sign-out-alt"></i> 確認送出
@@ -106,7 +106,6 @@
 	<script src="{{url_for('static', filename='vendor/datatables/dataTables.buttons.min.js')}}"></script>
 
 	<script>
-
 		$(document).ready(function() {
 			var selected_obj = {};
 
@@ -225,9 +224,8 @@
 				console.log(selected_obj);
 
 				//$('#selected').val(JSON.stringify(selected_obj));
-				$('#selected').val(JSON.stringify(Object.keys(selected_obj)));
-
-				
+				//$('#selected').val(JSON.stringify(Object.keys(selected_obj)));
+				Object.keys(selected_obj).map( x => $('#form_selected').append($("<input>").attr("type", "hidden").attr("name", "selected[]").val(x)));
 				//return false;
 			});
 

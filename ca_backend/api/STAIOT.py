@@ -56,14 +56,18 @@ class STALoc(Resource):
         station = args['Station']
         location = args['Location']
         # return Datastream.insert_all(station, location)
-        try:
-            return Datastream.get_station_info(station, location)
-        except pymongo.errors.InvalidOperation as e:
-            if(CILocation.objects(station__in=station).count() < 0):
-                CILocation.insert_all(station)
-                return Datastream.get_station_info(station, location)
-            else:
-                return {'data': 'error'}
+        if(CILocation.objects(station__in=station).count() < 0):
+            CILocation.insert_all(station)
+        return Datastream.get_station_info(station, location)
+
+        # try:
+        #     return Datastream.get_station_info(station, location)
+        # except pymongo.errors.InvalidOperation as e:
+        #     if(CILocation.objects(station__in=station).count() < 0):
+        #         CILocation.insert_all(station)
+        #         return Datastream.get_station_info(station, location)
+        #     else:
+        #         return {'data': 'error'}
 
     def put(self):
         parser = reqparse.RequestParser()

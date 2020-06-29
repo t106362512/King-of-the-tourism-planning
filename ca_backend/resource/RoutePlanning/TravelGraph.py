@@ -8,16 +8,18 @@ class TSPMatrix():
 
     def __init__(self, **kwargs):
         self.matrix = kwargs.get('matrix', [])
-        self.map_list = kwargs.get('map_list', [])
+        self.location_list = kwargs.get('location_list', [])
+        self.mapping_list = kwargs.get('mapping_list', [])
+        
 
     def from_gmaps_matrix(self, gmaps_matrix_dict:dict, **kwargs):
 
         """
         mode = select one from ('distance', 'duration', 'duration_in_traffic')
-        map_list = using index mapping the map_list 
+        mapping_list = using index mapping the mapping_list 
         """
-
-        self.map_list = kwargs.get('map_list', gmaps_matrix_dict['origin_addresses'])
+        self.location_list = kwargs.get('location_list', [])
+        self.mapping_list = kwargs.get('mapping_list', gmaps_matrix_dict['origin_addresses'])
         mode = kwargs.get('mode', 'distance')
 
         if gmaps_matrix_dict['status'] == 'OK':
@@ -27,7 +29,8 @@ class TSPMatrix():
             for row in rows:
                 el_list = []
                 for element in row['elements']:
-                    el_list.append(element[mode]['value'])
+                    if element['status'] == 'OK':
+                        el_list.append(element[mode]['value'])
                 self.matrix.append(el_list)
             pprint(self.matrix)
         return self
@@ -93,8 +96,9 @@ class TSP(TSPMatrix):
         # pprint(Visted_dict)
         Visted_dict[min_path].insert(0, s)
         # Visted_dict[min_path].append(s)
-        order_list = [self.map_list[i] for i in Visted_dict[min_path]] if self.map_list else Visted_dict[min_path]
-        return min_path, order_list
+        order_location_list = [self.location_list[i] for i in Visted_dict[min_path]] if self.location_list else Visted_dict[min_path]
+        order_mapping_list = [self.mapping_list[i] for i in Visted_dict[min_path]] if self.mapping_list else Visted_dict[min_path]
+        return (min_path,order_location_list, order_mapping_list)
 
     def backtracking_ans(self, start=0, **kwargs):
 
@@ -168,5 +172,6 @@ class TSP(TSPMatrix):
         best_route_cost = cost(cost_np_matrix, best_route)
         print(f'Best Route: {best_route}')
         print(f'Best Route Cost: {best_route_cost}')
-        order_list = [self.map_list[i] for i in best_route] if self.map_list else best_route
-        return best_route_cost, order_list
+        order_location_list = [self.location_list[i] for i in best_route] if self.location_list else best_route
+        order_mapping_list = [self.mapping_list[i] for i in best_route] if self.mapping_list else best_route
+        return (best_route_cost, order_location_list, order_mapping_list)

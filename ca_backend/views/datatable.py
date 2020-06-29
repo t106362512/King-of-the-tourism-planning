@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, g, session, request, jsonify
-from models.model import BaseDataTables
 import os
 import json
 

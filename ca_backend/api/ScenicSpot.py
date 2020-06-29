@@ -1,5 +1,5 @@
-from ..models.model import ScenicSpotInfo
-from ..models.database import Database
+from models.model import ScenicSpotInfo
+from models.database import Database
 from flask_restful import Resource, reqparse
 import requests
 import json
@@ -18,10 +18,10 @@ class ScenicSpot(Resource):
         parser.add_argument('Location', type=str, default=None, help='plz type like the 121.297187,24.943325')
         parser.add_argument('Distance', type=float, default=None, help='plz type the number')
         args = parser.parse_args()
-        result = {'data': ScenicSpotInfo.get(args)}
-        return result
+        result = ScenicSpotInfo.get(args)
+        return {'data': result}
 
-    def post(self):
+    def post(self, **kwargs):
         # pylint: disable=no-member
         """
         Input list in json body.
@@ -29,17 +29,18 @@ class ScenicSpot(Resource):
             "IdList":["C1_382000000A_402683", "C1_376430000A_000136"]
         }
         """
-        RETURN_FIELD = "Location"
+        RETURN_FIELDS = ["Location", "Name", "Id"]
         parser = reqparse.RequestParser()
         parser.add_argument('IdList', type=str, default=None, action='append')
-        args = parser.parse_args()
-        result_dict = json.loads(ScenicSpotInfo.objects(Id__in=args['IdList']).only(RETURN_FIELD).to_json())
-        result = {'data': result_dict}
-        return result
+        args = kwargs.get('args_dict', parser.parse_args()) 
+        result_dict = json.loads(ScenicSpotInfo.objects(Id__in=args['IdList']).only(*RETURN_FIELDS).to_json())
+        result = result_dict
+        return {'data': result}
 
     def put(self):
-        return ScenicSpotInfo.insert_all()
+        result = ScenicSpotInfo.insert_all()
+        return {'data': result}
 
     def delete(self):
-        result = ScenicSpotInfo.delete()
-        return {'collection': result, 'status': "successed"}
+        result = {'collection': ScenicSpotInfo.delete(), 'status': "successed"}
+        return {'data': result}
