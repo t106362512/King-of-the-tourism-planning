@@ -29,8 +29,8 @@ class TSPMatrix():
             for row in rows:
                 el_list = []
                 for element in row['elements']:
-                    if element['status'] == 'OK':
-                        el_list.append(element[mode]['value'])
+                    # if element['status'] == 'OK':
+                    el_list.append(element[mode]['value'])
                 self.matrix.append(el_list)
             pprint(self.matrix)
         return self

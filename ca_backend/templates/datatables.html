@@ -117,8 +117,8 @@
 				lengthMenu: [[10, 25, 50, 75, 100, -1], [10, 25, 50, 75, 100, 'All']],
 				"rowId": "Id",
 				"ajax": {
-					"url": "{{ url_for('api.scenice', Location='121.2977,24.9433', Distance='0.06') | safe}}",
-					//"url": "{{ url_for('api.scenice') | safe}}",
+					// "url": "{{ url_for('api.scenice', Location='121.2977,24.9433', Distance='0.06') | safe}}",
+					"url": "{{ url_for('api.scenice') | safe}}",
 					"data": function ( d ) {
 						d.extra_search = $('#extra').val();
 					}

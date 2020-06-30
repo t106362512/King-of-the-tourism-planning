@@ -8,16 +8,16 @@ import re
 import threading
 import time
 from queue import Queue
-import asyncio 
+import asyncio
 import json
-
-
+from flask import request
 
 class RoutePlanning(Resource):
 
     def get(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('LocationList', type=str, default=None, action='append', help='plz type like the ["121.297187,24.943325", "121.5353, 125.29261"]')
+        parser.add_argument('LocationList', type=str, default=None, action='append',
+                            help='plz type like the ["121.297187,24.943325", "121.5353, 125.29261"]')
         args = parser.parse_args()
         Location_list = args['LocationList']
         loc_list = [loc.replace(' ', '').split(',') for loc in Location_list]
@@ -28,11 +28,29 @@ class RoutePlanning(Resource):
     def post(self, **kwargs):
         # pylint: disable=no-member
         # import pdb; pdb.set_trace()
+        print('======================================')
+
+        data = request.form
+        print('data')
+        print(data)
+
+        print('--------------------------------------')
         parser = reqparse.RequestParser()
-        parser.add_argument('Location', type=str, default=None, action='append', help='plz type like the ["121.297187,24.943325"]')
-        parser.add_argument('Id', type=str, default=None, action='append', help='plz type like the ["C1_313020000G_000026"]')
+        parser.add_argument('Location', default=None, type=str, action='append',
+                            help='plz type like the ["121.297187,24.943325"]')
+        parser.add_argument('Id[]', default=None, type=str, action='append')
+        parser.add_argument('Id', default=None, type=str, action='append',
+                            help='plz type like the ["C1_313020000G_000026"]')
         raw_args = kwargs.get('args_dict', parser.parse_args())
+        print('raw_args')
         print(raw_args)
+        
+        if(raw_args['Id'] == None and raw_args['Id[]'] != None ):
+            raw_args['Id'] = raw_args['Id[]']
+
+        print('raw_args')
+        print(raw_args)
+        print('======================================')
 
         Inside = 'Location' if raw_args['Location'] else 'Id'
         stations = ['STA_AirQuality_v2', 'STA_Rain']
@@ -45,18 +63,20 @@ class RoutePlanning(Resource):
             if(CILocation.objects(station=sta).count() == 0):
                 CILocation.insert_all(station=sta)
 
-        def job(args:dict, q:Queue):
+        def job(args: dict, q: Queue):
             info_dict = {}
             info_dict['ScenicSpotInfo'] = (ScenicSpotInfo.get(args))
             for sta in stations:
                 ScenicSpotInfo_Loc = info_dict['ScenicSpotInfo'][0]['Location']
-                loc_array = CILocation.get({'Location': ScenicSpotInfo_Loc, 'Station': sta, 'Distance': 0.05})[0]['location']['coordinates']
-                sta_info = Datastream.get_station_info(sta, ','.join(map(str, loc_array)))
+                loc_array = CILocation.get({'Location': ScenicSpotInfo_Loc, 'Station': sta, 'Distance': 0.1})[0]['location']['coordinates']
+                sta_info = Datastream.get_station_info(
+                    sta, ','.join(map(str, loc_array)))
                 info_dict[sta] = sta_info
             q.put(info_dict)
 
         for i in range(len(raw_args[Inside])):
-            t = threading.Thread(target=job,args=({Inside: raw_args[Inside][i]},q))
+            t = threading.Thread(target=job, args=(
+                {Inside: raw_args[Inside][i]}, q))
             t.start()
             threads.append(t)
         for thread in threads:
@@ -80,8 +100,10 @@ class RoutePlanning(Resource):
     def post_single(self):
         # pylint: disable=no-member
         parser = reqparse.RequestParser()
-        parser.add_argument('Location', type=str, default=None, help='plz type like the "121.297187,24.943325"')
-        parser.add_argument('Id', type=str, default=None, help='plz type like the "C1_313020000G_000026"')
+        parser.add_argument('Location', type=str, default=None,
+                            help='plz type like the "121.297187,24.943325"')
+        parser.add_argument('Id', type=str, default=None,
+                            help='plz type like the "C1_313020000G_000026"')
         args = parser.parse_args()
         result_dict = {}
         result_dict['ScenicSpotInfo'] = (ScenicSpotInfo.get(args))
@@ -89,11 +111,12 @@ class RoutePlanning(Resource):
             # check if not have any station location, then insert all.
             if(CILocation.objects(station=sta).count() == 0):
                 CILocation.insert_all(sta)
-            loc_array = CILocation.get({**args, 'Station': sta, 'Distance': 0.05})[0]['location']['coordinates']
-            sta_info = Datastream.get_station_info(sta, ','.join(map(str, loc_array)))
+            loc_array = CILocation.get(
+                {**args, 'Station': sta, 'Distance': 0.05})[0]['location']['coordinates']
+            sta_info = Datastream.get_station_info(
+                sta, ','.join(map(str, loc_array)))
             result_dict[sta] = sta_info
         return {'data': result_dict}
-
 
     def put(self):
         pass
