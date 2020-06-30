@@ -137,9 +137,9 @@
 			// 	//traditional: true
 			// },
 			"ajax": {
-				"url": 'https://50aabc6d-45ac-45e3-bcc4-c8c53cd2d7c0.mock.pstmn.io/api/RoutePlanning',
+				"url": "{{ url_for('api.scenice') | safe}}",
+				//"url": 'https://50aabc6d-45ac-45e3-bcc4-c8c53cd2d7c0.mock.pstmn.io/api/RoutePlanning',
 				"type": "POST"
-				//"url": "{{ url_for('api.scenice') | safe}}",
 			},
 			"drawCallback": function (oSettings) {
 				$('[data-toggle="popover"]').popover({

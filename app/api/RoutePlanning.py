@@ -1,6 +1,6 @@
 # from ..models.RoutePlaningModel import RoutePlaning
-from resource.RoutePlanning import RoutePlanning as RP
-from models.model import ScenicSpotInfo, CILocation, Datastream
+from app.resource.RoutePlanning import RoutePlanning as RP
+from app.models.model import ScenicSpotInfo, CILocation, Datastream
 from flask_restful import Resource, reqparse
 import requests
 import json
@@ -94,7 +94,7 @@ class RoutePlanning(Resource):
         #         sta_info = Datastream.get_station_info(sta, ','.join(map(str, loc_array)))
         #         info_dict[sta] = sta_info
         #     result_list.append(info_dict)
-
+        # print([ rl['ScenicSpotInfo'][0]['Location'] for rl in result_list])
         return {'data': result_list}
 
     def post_single(self):

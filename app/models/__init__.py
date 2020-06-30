@@ -6,9 +6,3 @@
 # __all__ = ['Location', 'Observation', 'Thing', 'Datastream', 'FullDatastream', 'Database']
 # __version__ = '0.1'
 # __author__ = 'CCW'
-
-from flask_mongoengine import MongoEngine
-from flask_pymongo import PyMongo
-
-db = MongoEngine()
-pymdb = PyMongo()

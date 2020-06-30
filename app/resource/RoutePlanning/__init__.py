@@ -27,7 +27,8 @@ class RoutePlanning:
         matrix = self.gmaps.distance_matrix(
             org,
             org,
-            mode="walking",
+            # mode="walking",
+            mode="driving",
             language="zh-TW",
             units="metric",
             departure_time=now

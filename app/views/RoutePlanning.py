@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, g, session, request, jsonify, request, redirect, url_for
-from models.model import ScenicSpotInfo
-from resource.RoutePlanning import RoutePlanning
+from app.models.model import ScenicSpotInfo
+from app.resource.RoutePlanning import RoutePlanning
 # from api.RoutePlanning import RoutePlanning as APIRP
-from api.ScenicSpot import ScenicSpot as APISS
+from app.api.ScenicSpot import ScenicSpot as APISS
 
 import os
 import json
@@ -31,4 +31,4 @@ def result():
     columns = ["Index", "景點名稱", "簡介", "地址", "電話", "空氣監測", "雨量監測"]
 
     return render_template('recommend.html', columns=columns, myhtml=gmp, mapping_paths=min_mapping_path_list, id_list=id_list, loc_list=min_path_list, length=min_path_length)
-#     return render_template('recommend.html', columns=columns)
+    # return render_template('test.html',  columns=columns, myhtml=gmp, mapping_paths=min_mapping_path_list, id_list=id_list, loc_list=min_path_list, length=min_path_length)

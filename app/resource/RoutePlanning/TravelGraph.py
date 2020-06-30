@@ -93,7 +93,6 @@ class TSP(TSPMatrix):
             min_path = min(min_path, current_pathweight)
             if not next_permutation(vertex):
                 break
-        # pprint(Visted_dict)
         Visted_dict[min_path].insert(0, s)
         # Visted_dict[min_path].append(s)
         order_location_list = [self.location_list[i] for i in Visted_dict[min_path]] if self.location_list else Visted_dict[min_path]

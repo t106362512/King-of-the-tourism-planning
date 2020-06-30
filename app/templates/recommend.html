@@ -5,6 +5,19 @@
 <link href="{{url_for('static', filename='vendor/datatables/select.dataTables.min.css')}}" rel="stylesheet">
 <link href="{{url_for('static', filename='vendor/datatables/buttons.dataTables.min.css')}}" rel="stylesheet">
 
+<style>
+	html,
+	body {
+		width: 100%;
+		height: 100%;
+	}
+
+	#map {
+		width: 100%;
+		height: 100%;
+	}
+</style>
+
 {% endblock %}
 
 {% block content %}
@@ -17,7 +30,7 @@
 		<!-- 推薦旅遊流程 -->
 		<div class="col-sm-12">
 			<!-- Content Row -->
-			<div id="" class="card shadow mb-4">
+			<div class="card shadow mb-4">
 
 				<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 					<div>
@@ -51,19 +64,25 @@
 			</div>
 		</div>
 
-		<!-- 地圖 -->
-		<div class="col-sm-12">
+		<!-- 推薦旅遊流程 -->
+		<div class="col-md-12 mb-8">
 			<!-- Content Row -->
-			<div id="" class="card shadow mb-4">
+			<div class="card card-cascade narrower">
 
-				<div class="card-body">
+				<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+					<div>
+						<h6 class="m-0 font-weight-bold text-primary">地圖</h6>
+					</div>
+				</div>
 
-
+				<div class="card-body card-body-cascade text-center">
+					<div id="map-container-google-8" class="z-depth-1-half map-container-5" style="height: 600px">
+						<div id="map"></div>
+					</div>
 				</div>
 
 			</div>
 		</div>
-
 
 	</div>
 
@@ -74,6 +93,21 @@
 
 {% block PageCustomScripts %}
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcnZRtkbHg4X80RTTQSz60a2SvqmBitp8&callback=initMap" async defer></script>
+<script>
+	var map;
+	function initMap() {
+		map = new google.maps.Map(document.getElementById('map'), {
+			center: { lat: 23.973837, lng: 120.97969 },
+			zoom: 8,
+		});
+		// var marker = new google.maps.Marker({
+		// 	position: { lat: 23.973837, lng: 120.97969 },
+		// 	map: map,
+		// 	title: 'Hello World!'
+		// });
+	}
+</script>
 
 <!-- Page level plugins -->
 <script src="{{url_for('static', filename='vendor/datatables/jquery.dataTables.min.js')}}"></script>
@@ -86,12 +120,12 @@
 <script>
 
 	$(document).ready(function () {
-
+		var marker_obj = Object;
 		// https://50aabc6d-45ac-45e3-bcc4-c8c53cd2d7c0.mock.pstmn.io/api/RoutePlanning
 
 		// 這是字串 包 LIST, typeof == string
-		console.log('id_list id_list');
-		console.log("{{id_list|safe}}");
+		// console.log('id_list id_list');
+		// console.log("{{id_list|safe}}");
 
 		//這樣拿才是 list 
 		var IdList = {{id_list| safe}};
@@ -102,40 +136,6 @@
 		// var Id_List = $.param({ Id: IdList }, true);
 		// console.log('Id_List');
 		// console.log(Id_List);
-
-		// $.ajax({
-		// 	url: "{{ url_for('api.RoutePlanning') | safe}}",
-		// 	type: 'post',
-		// 	data: Id_List,
-		// 	complete: function () {
-		// 		console.log('complete');
-		// 	},
-		// 	success: function (response) {
-		// 		console.log('response');
-		// 		console.log(response);
-		// 	},
-		// 	error: function (error) {
-		// 		console.log('error');
-		// 		console.log(error);
-		// 	}
-		// });
-
-		// $.ajax({
-		// 	"url": 'https://50aabc6d-45ac-45e3-bcc4-c8c53cd2d7c0.mock.pstmn.io/api/RoutePlanning',
-		// 	"type": "POST",
-		// 	complete: function () {
-		// 		console.log('complete');
-		// 	},
-		// 	success: function (response) {
-		// 		console.log('response');
-		// 		console.log(response);
-		// 	},
-		// 	error: function (error) {
-		// 		console.log('error');
-		// 		console.log(error);
-		// 	}
-		// });
-
 
 		var columnTypes = {
 			"HOUR_3": { "Rain": true, "Name": "3小時累積雨量", "Symbol": "mm" },
@@ -177,6 +177,52 @@
 					trigger: 'focus',
 					placement: 'auto'
 				});
+
+
+				var api_data = this.api().rows().data();
+ 
+				// Output the data for the visible rows to the browser's console
+				console.log(api_data);
+				console.log(api_data.length);
+				var points = [];
+				$.each(api_data,function(index,obj){
+					console.log(index);
+					console.log(obj);
+
+					Id = obj['ScenicSpotInfo'][0]['Id'];
+					Name = obj['ScenicSpotInfo'][0]['Name'];
+					LLocation = { lat: obj['ScenicSpotInfo'][0]['Location'][1], lng: obj['ScenicSpotInfo'][0]['Location'][0] },
+					contentString = obj['ScenicSpotInfo'][0]['Toldescribe'];
+					points.push(LLocation);
+
+					var infowindow = new google.maps.InfoWindow({
+						content: Name
+					});
+					var marker = new google.maps.Marker({
+						position: LLocation,
+						map: map,
+						title: String(index+1)
+					});
+					marker.addListener('click', function() {
+						infowindow.open(map, marker);
+					});
+					
+
+				});
+				console.log('points');
+				console.log(points);
+
+				if (points.length > 1){
+					var polyline = new google.maps.Polyline({
+						path: points,
+						strokeColor: '#0000FF',
+						strokeOpacity: 1.0,
+						strokeWeight: 2
+					});
+
+					polyline.setMap(map);
+				}
+
 			},
 			"columns": [
 				{
@@ -211,6 +257,8 @@
 				{
 					data: 'STA_AirQuality_v2',
 					render: function (data, type, row, meta) {
+						// console.log('STA_AirQuality_v2');
+						// console.log(data);
 						var updateTime = 'N/A';
 						var updateLocal = 'N/A';
 						var value = '<ul>';
@@ -240,37 +288,39 @@
 				{
 					data: 'STA_Rain',
 					render: function (data, type, row, meta) {
+						// console.log('STA_Rain');
+						// console.log(data);
+						var updateTime = 'N/A';
+						var updateLocal = 'N/A';
 						var status = true;
 						var value = '<ul>';
 						$.each(data, function (index, obj) {
-							Type = obj['description'].split("-").slice(-1)
-							if (Type in columnTypes) {
-
-								var result = obj['Observations'];
-								if (result) {
+							Type = obj['description'].split("-").slice(-1);
+							if (obj['Observations']) {
+								if (Type in columnTypes) {
 									result = obj['Observations'][0]['result'];
-
-									if (columnTypes[Type]['Rain']) {
-										if (result <= 0) {
-											result = 0;
-										} else {
-											result = obj['Observations'][0]['result'];
+									if (result <= 0) {
+										result = 0;
+									} else {
+										result = obj['Observations'][0]['result'];
+										if (columnTypes[Type]['Rain']) {
 											status = false;
 										}
 									}
 									value += '<li>' + columnTypes[Type]['Name'] + '：' + (obj['Observations'][0]['result'] < 0 ? 0 : obj['Observations'][0]['result']) + ' ' + columnTypes[Type]['Symbol'] + '</li>';
-
+									updateTime = Date(obj['Observations'][0]['phenomenonTime']).toLocaleString();
+									updateLocal = obj['ObservatoryName'].split("-").slice(-1);
 								} else {
-									value += '<li>' + columnTypes[Type]['Name'] + '：N/A</li>';
+									value += '<li>' + Type + '：' + (obj['Observations'][0]['result'] < 0 ? 0 : obj['Observations'][0]['result']) + '</li>';
 								}
 
 							} else {
-								value += '<li>' + Type + '：' + (obj['Observations'][0]['result'] < 0 ? 0 : obj['Observations'][0]['result']) + '</li>';
+								value += '<li>' + columnTypes[Type]['Name'] + '：N/A</li>';
 							}
 
 							if ((data.length - 1) == index) {
-								value += '<li>更新時間：' + Date(obj['Observations'][0]['phenomenonTime']).toLocaleString() + '</li>';
-								value += '<li>觀測地點：' + obj['ObservatoryName'].split("-").slice(-1) + '</li>';
+								value += '<li>更新時間：' + updateTime + '</li>';
+								value += '<li>觀測地點：' + updateLocal + '</li>';
 							}
 
 						});

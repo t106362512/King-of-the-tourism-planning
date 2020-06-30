@@ -1,5 +1,5 @@
-from models.model import FullDatastream#, Datastreams, Observations
-from models.database import Database
+from app.models.model import FullDatastream#, Datastreams, Observations
+from app.models.database import Database
 from pprint import pprint
 import requests
 import unittest

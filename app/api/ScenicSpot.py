@@ -1,5 +1,4 @@
-from models.model import ScenicSpotInfo
-from models.database import Database
+from app.models.model import ScenicSpotInfo
 from flask_restful import Resource, reqparse
 import requests
 import json

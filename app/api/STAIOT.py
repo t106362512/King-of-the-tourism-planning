@@ -1,6 +1,5 @@
 from flask_restful import Resource, reqparse
-from ..models.model import CILocation, Datastream
-from ..models.database import Database
+from app.models.model import CILocation, Datastream
 import pymongo
 import requests
 import json

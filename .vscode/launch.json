@@ -18,6 +18,7 @@
             "name": "Python: Flask",
             "type": "python",
             "request": "launch",
+            "cwd": "${workspaceFolder}",
             "module": "flask",
             "env": {
                 "FLASK_APP": "app.py",

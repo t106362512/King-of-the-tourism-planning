@@ -4,12 +4,12 @@ from flask_caching import Cache
 from flask_mongoengine import MongoEngine
 from flask_cors import CORS
 from flask_bootstrap import Bootstrap
-from .api.ScenicSpot import ScenicSpot
-from .api.STAIOT import STALoc
-from .api.RoutePlanning import RoutePlanning
-from .views.demo import demo
-from .views.datatable import datable
-from .views.RoutePlanning import RoutePlanning_bp
+from app.api.ScenicSpot import ScenicSpot
+from app.api.STAIOT import STALoc
+from app.api.RoutePlanning import RoutePlanning
+from app.views.demo import demo
+from app.views.datatable import datable
+from app.views.RoutePlanning import RoutePlanning_bp
 # from flask_marshmallow import Marshmallow
 import os
 
@@ -31,8 +31,8 @@ def create_app(config_name='development'):
     api.add_resource(STALoc, '/api/location', endpoint='api.stalocation')
     api.add_resource(RoutePlanning, '/api/RoutePlanning', endpoint='api.RoutePlanning')
     app.register_blueprint(demo, url_prefix='/site')
-    app.register_blueprint(datable, url_prefix='/databale')
-    app.register_blueprint(RoutePlanning_bp)
+    app.register_blueprint(RoutePlanning_bp, url_prefix='/RoutePlanning')
+    app.register_blueprint(datable, url_prefix='/')
     cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
     
 
