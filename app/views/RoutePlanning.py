@@ -21,7 +21,7 @@ def handle_404(err):
 
 @RoutePlanning_bp.app_errorhandler(500)
 def handle_500(err):
-    return render_template('hanlder/404.html'), 500
+    return render_template('hanlder/500.html'), 500
 
 
 @RoutePlanning_bp.route('/result', methods=['POST', 'get'])
@@ -35,7 +35,7 @@ def result():
     loc_list = [apiss_info['Location'] for apiss_info in ssinfo_by_id]
     name_list = [apiss_info['Name'] for apiss_info in ssinfo_by_id]
     id_list = [apiss_info['Id'] for apiss_info in ssinfo_by_id]
-    min_path_length, min_path_list, min_mapping_path_list, gmp = RoutePlanning().get_shortest_map(localtion_list=loc_list, mapping_list=name_list)
+    min_path_length, min_path_list, min_mapping_path_list, gmp = RoutePlanning().get_shortest_map(localtion_list=loc_list, mapping_list=id_list)
     columns = ["Index", "景點名稱", "簡介", "地址", "電話", "空氣監測", "雨量監測"]
 
     return render_template('recommend.html', columns=columns, myhtml=gmp, mapping_paths=min_mapping_path_list, id_list=id_list, loc_list=min_path_list, length=min_path_length)
