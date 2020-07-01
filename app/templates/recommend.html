@@ -93,20 +93,52 @@
 
 {% block PageCustomScripts %}
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcnZRtkbHg4X80RTTQSz60a2SvqmBitp8&callback=initMap" async defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcnZRtkbHg4X80RTTQSz60a2SvqmBitp8&callback=initMap" async
+	defer></script>
 <script>
+	console.log('mapping_paths min_mapping_path_list');
+	var mapping_paths = {{mapping_paths|tojson}};
+	console.log(mapping_paths);
+
+	console.log('id_list id_list');
+	var IdList = {{id_list|tojson}};
+	console.log(IdList);
+
+	console.log('loc_list min_path_list');
+	var loc_list = {{loc_list|tojson}};
+	console.log(loc_list);
+
+	console.log('length min_path_length');
+	var min_path_length = "{{length|safe}}";
+	console.log(min_path_length);
+
+
 	var map;
+	var directionsService;
 	function initMap() {
+		directionsService = new google.maps.DirectionsService;
 		map = new google.maps.Map(document.getElementById('map'), {
 			center: { lat: 23.973837, lng: 120.97969 },
 			zoom: 8,
 		});
-		// var marker = new google.maps.Marker({
-		// 	position: { lat: 23.973837, lng: 120.97969 },
-		// 	map: map,
-		// 	title: 'Hello World!'
-		// });
 	}
+
+	function calculateAndDisplayRoute(directionsService, directionsDisplay, startPoint, endPoint, bounds) {
+		directionsService.route({
+			origin: startPoint,
+			destination: endPoint,
+			travelMode: 'DRIVING'
+		}, function (response, status) {
+			if (status === 'OK') {
+				directionsDisplay.setDirections(response);
+				bounds.union(response.routes[0].bounds);
+				map.fitBounds(bounds);
+			} else {
+				window.alert('Impossible d afficher la route ' + status);
+			}
+		});
+	}
+
 </script>
 
 <!-- Page level plugins -->
@@ -120,22 +152,65 @@
 <script>
 
 	$(document).ready(function () {
-		var marker_obj = Object;
+
+		var listPos = [];
+		$.each(IdList, function (index, Id) {
+			console.log(index);
+			console.log(Id);
+
+			Name = mapping_paths[index];
+			LLocation = { lat: loc_list[index][0], lng: loc_list[index][1] },
+				listPos.push(LLocation);
+
+
+			var infowindow = new google.maps.InfoWindow({
+				content: Name
+			});
+			var marker = new google.maps.Marker({
+				position: LLocation,
+				map: map,
+				label: String(index + 1),
+				title: String(index + 1)
+			});
+			marker.addListener('click', function () {
+				infowindow.open(map, marker);
+			});
+
+
+		});
+		console.log('listPos');
+		console.log(listPos);
+
+		if (listPos.length > 1) {
+			// var polyline = new google.maps.Polyline({
+			// 	path: listPos,
+			// 	strokeColor: '#0000FF',
+			// 	strokeOpacity: 1.0,
+			// 	strokeWeight: 2
+			// });
+
+			// polyline.setMap(map);
+
+			var bounds = new google.maps.LatLngBounds();
+			for (var i = 0; i < listPos.length; i++) {
+				if (i == 0) {
+					continue
+				}
+
+				var startPoint = new google.maps.LatLng(listPos[i - 1]['lat'], listPos[i - 1]['lng']);
+				var endPoint = new google.maps.LatLng(listPos[i]['lat'], listPos[i]['lng']);
+				var directionsDisplay = new google.maps.DirectionsRenderer({
+					map: map,
+					preserveViewport: true,
+					suppressMarkers: true
+				});
+				calculateAndDisplayRoute(directionsService, directionsDisplay, startPoint, endPoint, bounds);
+			}
+
+		}
+
+
 		// https://50aabc6d-45ac-45e3-bcc4-c8c53cd2d7c0.mock.pstmn.io/api/RoutePlanning
-
-		// 這是字串 包 LIST, typeof == string
-		// console.log('id_list id_list');
-		// console.log("{{id_list|safe}}");
-
-		//這樣拿才是 list 
-		var IdList = {{id_list| safe}};
-		console.log('IdList');
-		console.log(IdList);
-
-		// 類似序列化
-		// var Id_List = $.param({ Id: IdList }, true);
-		// console.log('Id_List');
-		// console.log(Id_List);
 
 		var columnTypes = {
 			"HOUR_3": { "Rain": true, "Name": "3小時累積雨量", "Symbol": "mm" },
@@ -170,7 +245,7 @@
 				type: 'POST',
 				data: { Id: IdList }
 			},
-
+			// order: [[0, 'asc']],
 			"drawCallback": function (oSettings) {
 				$('[data-toggle="popover"]').popover({
 					html: true,
@@ -178,57 +253,18 @@
 					placement: 'auto'
 				});
 
-
-				var api_data = this.api().rows().data();
- 
-				// Output the data for the visible rows to the browser's console
-				console.log(api_data);
-				console.log(api_data.length);
-				var points = [];
-				$.each(api_data,function(index,obj){
-					console.log(index);
-					console.log(obj);
-
-					Id = obj['ScenicSpotInfo'][0]['Id'];
-					Name = obj['ScenicSpotInfo'][0]['Name'];
-					LLocation = { lat: obj['ScenicSpotInfo'][0]['Location'][1], lng: obj['ScenicSpotInfo'][0]['Location'][0] },
-					contentString = obj['ScenicSpotInfo'][0]['Toldescribe'];
-					points.push(LLocation);
-
-					var infowindow = new google.maps.InfoWindow({
-						content: Name
-					});
-					var marker = new google.maps.Marker({
-						position: LLocation,
-						map: map,
-						title: String(index+1)
-					});
-					marker.addListener('click', function() {
-						infowindow.open(map, marker);
-					});
-					
-
-				});
-				console.log('points');
-				console.log(points);
-
-				if (points.length > 1){
-					var polyline = new google.maps.Polyline({
-						path: points,
-						strokeColor: '#0000FF',
-						strokeOpacity: 1.0,
-						strokeWeight: 2
-					});
-
-					polyline.setMap(map);
-				}
-
 			},
 			"columns": [
 				{
 					orderable: false,
 					data: null,
-					defaultContent: ""
+					render: function (data, type, row, meta) {
+						Id = data['ScenicSpotInfo'][0]['Id'];
+						order = IdList.indexOf(Id)
+						console.log(order);
+						console.log(data['ScenicSpotInfo'][0]['Name']);
+						return ++order;
+					}
 				},
 				{
 					data: 'ScenicSpotInfo',
@@ -336,12 +372,6 @@
 				}
 			]
 		});
-
-		myTable.on('order.dt search.dt', function () {
-			myTable.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
-				cell.innerHTML = i + 1;
-			});
-		}).draw();
 
 	});
 

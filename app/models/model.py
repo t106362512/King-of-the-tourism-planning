@@ -81,6 +81,7 @@ class ScenicSpotInfo(me.Document):
             'Ticketinfo__icontains': args['Ticketinfo'],
             'Travellinginfo__icontains': args['Travellinginfo'],
             'Add__icontains': args['Add'],
+            'Add__not': re.compile('.*金門縣.*|.*澎湖.*|.*綠島.*|.*小琉球.*|.*馬祖.*|.*蘭嶼.*'),
             # 'Location__geo_within_center': [args['Location'].split(','), args['Distance']] if args['Location'] and args['Distance'] else None,
             # 'Location__geo_within_sphere': [args['Location'].split(','), args['Distance']] if args['Location'] and args['Distance'] else None
             'Location__near': list(map(float, args['Location'].split(','))) if isinstance(args['Location'], str) else None,

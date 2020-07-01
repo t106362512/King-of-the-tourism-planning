@@ -35,6 +35,4 @@ def create_app(config_name='development'):
     app.register_blueprint(datable, url_prefix='/')
     cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
     
-
-
     return app
