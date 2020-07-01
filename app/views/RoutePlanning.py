@@ -30,7 +30,6 @@ def result():
     print('select_id = {}'.format(select_id))
 #     select_id = ['C1_A25000000E_000003', 'C1_387000000A_000161', 'C1_397000000A_000221', 'C1_397000000A_000634', 'C1_376550000A_000086', 'C1_376540000A_001295', 'C1_315081100H_000368', 'C1_376420000A_000430', 'C1_376420000A_000019', 'C1_376440000A_000853']
 
-    # a = APIRP().post(Id=select_id)
     ssinfo_by_id = APISS().post(args_dict={'IdList': select_id})['data']
     loc_list = [apiss_info['Location'] for apiss_info in ssinfo_by_id]
     name_list = [apiss_info['Name'] for apiss_info in ssinfo_by_id]
@@ -39,4 +38,3 @@ def result():
     columns = ["Index", "景點名稱", "簡介", "地址", "電話", "空氣監測", "雨量監測"]
 
     return render_template('recommend.html', columns=columns, myhtml=gmp, mapping_paths=min_mapping_path_list, id_list=id_list, loc_list=min_path_list, length=min_path_length)
-    # return render_template('test.html',  columns=columns, myhtml=gmp, mapping_paths=min_mapping_path_list, id_list=id_list, loc_list=min_path_list, length=min_path_length)
