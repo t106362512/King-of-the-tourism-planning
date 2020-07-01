@@ -15,6 +15,14 @@ RoutePlanning_bp = Blueprint('RoutePlanning', __name__, template_folder='templat
 def index():
     return render_template('base.html')
 
+@RoutePlanning_bp.app_errorhandler(404)
+def handle_404(err):
+    return render_template('hanlder/404.html'), 404
+
+@RoutePlanning_bp.app_errorhandler(500)
+def handle_500(err):
+    return render_template('hanlder/404.html'), 500
+
 
 @RoutePlanning_bp.route('/result', methods=['POST', 'get'])
 def result():

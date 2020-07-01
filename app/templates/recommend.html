@@ -93,23 +93,28 @@
 
 {% block PageCustomScripts %}
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcnZRtkbHg4X80RTTQSz60a2SvqmBitp8&callback=initMap" async
-	defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcnZRtkbHg4X80RTTQSz60a2SvqmBitp8&callback=initMap" defer></script>
 <script>
 	console.log('mapping_paths min_mapping_path_list');
-	var mapping_paths = {{mapping_paths|tojson}};
+	var mapping_paths = {{mapping_paths|tojson|safe}};
+	// console.log(mapping_paths);
+	//因為TSP會回起點，目前前端顯示不需要，所以先做以下處理
+	if (mapping_paths[0] == mapping_paths[mapping_paths.length-1]) {
+		mapping_paths.pop();
+	}
 	console.log(mapping_paths);
 
+	// 未經過 TSP
 	console.log('id_list id_list');
-	var IdList = {{id_list|tojson}};
+	var IdList = {{id_list|tojson|safe}};
 	console.log(IdList);
 
 	console.log('loc_list min_path_list');
-	var loc_list = {{loc_list|tojson}};
+	var loc_list = {{loc_list|tojson|safe}};
 	console.log(loc_list);
 
 	console.log('length min_path_length');
-	var min_path_length = "{{length|safe}}";
+	var min_path_length = {{length|safe}};
 	console.log(min_path_length);
 
 
@@ -153,63 +158,6 @@
 
 	$(document).ready(function () {
 
-		var listPos = [];
-		$.each(IdList, function (index, Id) {
-			console.log(index);
-			console.log(Id);
-
-			Name = mapping_paths[index];
-			LLocation = { lat: loc_list[index][0], lng: loc_list[index][1] },
-				listPos.push(LLocation);
-
-
-			var infowindow = new google.maps.InfoWindow({
-				content: Name
-			});
-			var marker = new google.maps.Marker({
-				position: LLocation,
-				map: map,
-				label: String(index + 1),
-				title: String(index + 1)
-			});
-			marker.addListener('click', function () {
-				infowindow.open(map, marker);
-			});
-
-
-		});
-		console.log('listPos');
-		console.log(listPos);
-
-		if (listPos.length > 1) {
-			// var polyline = new google.maps.Polyline({
-			// 	path: listPos,
-			// 	strokeColor: '#0000FF',
-			// 	strokeOpacity: 1.0,
-			// 	strokeWeight: 2
-			// });
-
-			// polyline.setMap(map);
-
-			var bounds = new google.maps.LatLngBounds();
-			for (var i = 0; i < listPos.length; i++) {
-				if (i == 0) {
-					continue
-				}
-
-				var startPoint = new google.maps.LatLng(listPos[i - 1]['lat'], listPos[i - 1]['lng']);
-				var endPoint = new google.maps.LatLng(listPos[i]['lat'], listPos[i]['lng']);
-				var directionsDisplay = new google.maps.DirectionsRenderer({
-					map: map,
-					preserveViewport: true,
-					suppressMarkers: true
-				});
-				calculateAndDisplayRoute(directionsService, directionsDisplay, startPoint, endPoint, bounds);
-			}
-
-		}
-
-
 		// https://50aabc6d-45ac-45e3-bcc4-c8c53cd2d7c0.mock.pstmn.io/api/RoutePlanning
 
 		var columnTypes = {
@@ -243,9 +191,9 @@
 				// "type": "POST"
 				url: "{{ url_for('api.RoutePlanning') | safe}}",
 				type: 'POST',
-				data: { Id: IdList }
+				data: { Id: mapping_paths }
 			},
-			// order: [[0, 'asc']],
+			order: [[0, 'asc']],
 			"drawCallback": function (oSettings) {
 				$('[data-toggle="popover"]').popover({
 					html: true,
@@ -253,16 +201,80 @@
 					placement: 'auto'
 				});
 
+				var api_rows_data = this.api().rows().data();
+				// console.log(api_rows_data);
+				if (api_rows_data.length > 0) {
+					console.log('Build Google Maps');
+
+					var listPos = [];
+					$.each(mapping_paths, function (index, Id) {
+						// console.log(index);
+						// console.log(Id);
+
+						Id = mapping_paths[index];
+						LLocation = { lat: loc_list[index][0], lng: loc_list[index][1] },
+							listPos.push(LLocation);
+
+						Name = 'N/A';
+						var filter_Id = api_rows_data.filter(obj => {
+							return obj['ScenicSpotInfo'][0].Id === Id;
+						});
+						if (filter_Id.length == 1) {
+							Name = filter_Id[0]['ScenicSpotInfo'][0].Name;
+						}
+
+
+						var infowindow = new google.maps.InfoWindow({
+							content: Name
+						});
+						var marker = new google.maps.Marker({
+							position: LLocation,
+							map: map,
+							label: String(index + 1),
+							title: String(index + 1)
+						});
+						marker.addListener('click', function () {
+							infowindow.open(map, marker);
+						});
+
+
+					});
+					console.log('listPos');
+					console.log(listPos);
+
+					if (listPos.length > 1) {
+
+						var bounds = new google.maps.LatLngBounds();
+						for (var i = 0; i < listPos.length; i++) {
+							if (i == 0) {
+								continue
+							}
+
+							var startPoint = new google.maps.LatLng(listPos[i - 1]['lat'], listPos[i - 1]['lng']);
+							var endPoint = new google.maps.LatLng(listPos[i]['lat'], listPos[i]['lng']);
+							var directionsDisplay = new google.maps.DirectionsRenderer({
+								map: map,
+								preserveViewport: true,
+								suppressMarkers: true
+							});
+							calculateAndDisplayRoute(directionsService, directionsDisplay, startPoint, endPoint, bounds);
+						}
+
+					}
+				}
+
+
 			},
 			"columns": [
 				{
 					orderable: false,
 					data: null,
 					render: function (data, type, row, meta) {
+						// 因為後端回傳的順序並不是按照傳入的順序，所以需要給index排序
 						Id = data['ScenicSpotInfo'][0]['Id'];
-						order = IdList.indexOf(Id)
-						console.log(order);
-						console.log(data['ScenicSpotInfo'][0]['Name']);
+						order = mapping_paths.indexOf(Id)
+						// console.log(order);
+						// console.log(data['ScenicSpotInfo'][0]['Name']);
 						return ++order;
 					}
 				},
