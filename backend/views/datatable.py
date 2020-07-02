@@ -1,6 +1,4 @@
 from flask import Blueprint, render_template, g, session, request, jsonify
-import os
-import json
 
 datable = Blueprint('datable', __name__, template_folder='templates',
                     static_folder='static')

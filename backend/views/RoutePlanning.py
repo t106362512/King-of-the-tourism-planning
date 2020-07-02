@@ -1,11 +1,8 @@
 from flask import Blueprint, render_template, g, session, request, jsonify, request, redirect, url_for
-from app.models.model import ScenicSpotInfo
-from app.resource.RoutePlanning import RoutePlanning
+from backend.models.model import ScenicSpotInfo
+from backend.resource.RoutePlanning import RoutePlanning
 # from api.RoutePlanning import RoutePlanning as APIRP
-from app.api.ScenicSpot import ScenicSpot as APISS
-
-import os
-import json
+from backend.api.ScenicSpot import ScenicSpot as APISS
 
 RoutePlanning_bp = Blueprint('RoutePlanning', __name__, template_folder='templates',
                              static_folder='static')

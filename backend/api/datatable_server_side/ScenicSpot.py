@@ -1,8 +1,8 @@
-from app.models.model import ScenicSpotInfo
+from backend.resource.datatable_server_side.serverside_table import ServerSideTable
+from backend.models.model import ScenicSpotInfo
 from flask_restful import Resource, reqparse
-import requests
+from flask import request
 import json
-import re
 
 class ScenicSpot(Resource):
 
@@ -18,7 +18,41 @@ class ScenicSpot(Resource):
         parser.add_argument('Distance', type=float, default=None, help='plz type the number')
         args = parser.parse_args()
         result = ScenicSpotInfo.get(args)
-        return {'data': result}
+
+        SERVERSIDE_TABLE_COLUMNS = [
+            {
+                "data_name": "Name",
+                "column_name": "Name",
+                "default": "",
+                "order": 1,
+                "searchable": True
+            },
+            {
+                "data_name": "Toldescribe",
+                "column_name": "Toldescribe",
+                "default": "",
+                "order": 2,
+                "searchable": True
+            },
+            {
+                "data_name": "Add",
+                "column_name": "Add",
+                "default": 0,
+                "order": 3,
+                "searchable": True
+            },
+            {
+                "data_name": "Tel",
+                "column_name": "Tel",
+                "default": 0,
+                "order": 4,
+                "searchable": False
+            }
+        ]
+
+        a = ServerSideTable(request, data=result, column_list=SERVERSIDE_TABLE_COLUMNS).output_result()
+        return a
+        # return {'data': result}
 
     def post(self, **kwargs):
         # pylint: disable=no-member
@@ -34,12 +68,4 @@ class ScenicSpot(Resource):
         args = kwargs.get('args_dict', parser.parse_args()) 
         result_dict = json.loads(ScenicSpotInfo.objects(Id__in=args['IdList']).only(*RETURN_FIELDS).to_json())
         result = result_dict
-        return {'data': result}
-
-    def put(self):
-        result = ScenicSpotInfo.insert_all()
-        return {'data': result}
-
-    def delete(self):
-        result = {'collection': ScenicSpotInfo.delete(), 'status': "successed"}
         return {'data': result}

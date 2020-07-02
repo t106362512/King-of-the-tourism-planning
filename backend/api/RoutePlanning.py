@@ -1,6 +1,6 @@
 # from ..models.RoutePlaningModel import RoutePlaning
-from app.resource.RoutePlanning import RoutePlanning as RP
-from app.models.model import ScenicSpotInfo, CILocation, Datastream
+from backend.resource.RoutePlanning import RoutePlanning as RP
+from backend.models.model import ScenicSpotInfo, CILocation, Datastream
 from flask_restful import Resource, reqparse
 import threading
 from queue import Queue
@@ -55,7 +55,6 @@ class RoutePlanning(Resource):
                 info_dict[sta] = sta_info
             q.put(info_dict)
             
-
         for raw_arg in raw_args[Inside]:
             t = threading.Thread(target=job, args=(
                 {Inside: raw_arg}, q))
@@ -66,7 +65,6 @@ class RoutePlanning(Resource):
             thread.join()
             
         for _ in raw_args[Inside]:
-            
             result_list.append(q.get())
             # print('Name: {}, Id: {}'.format(a['ScenicSpotInfo'][0]['Name'], a['ScenicSpotInfo'][0]['Id']))
 

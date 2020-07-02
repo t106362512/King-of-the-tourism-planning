@@ -1,8 +1,5 @@
 from flask_restful import Resource, reqparse
-from app.models.model import CILocation, Datastream
-import pymongo
-import requests
-import json
+from backend.models.model import CILocation, Datastream
 
 class STALoc(Resource):
     

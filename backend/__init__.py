@@ -3,13 +3,13 @@ from flask_restful import Api
 from flask_caching import Cache
 from flask_mongoengine import MongoEngine
 from flask_cors import CORS
-# from app.api.datatable_server_side.ScenicSpot import ScenicSpot
-from app.api.ScenicSpot import ScenicSpot
-from app.api.STAIOT import STALoc
-from app.api.RoutePlanning import RoutePlanning
-from app.views.demo import demo
-from app.views.datatable import datable
-from app.views.RoutePlanning import RoutePlanning_bp
+# from backend.api.datatable_server_side.ScenicSpot import ScenicSpot
+from backend.api.ScenicSpot import ScenicSpot
+from backend.api.STAIOT import STALoc
+from backend.api.RoutePlanning import RoutePlanning
+from backend.views.demo import demo
+from backend.views.datatable import datable
+from backend.views.RoutePlanning import RoutePlanning_bp
 import os
 
 db = MongoEngine()
