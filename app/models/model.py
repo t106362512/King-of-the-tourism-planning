@@ -2,16 +2,12 @@
 from collections import defaultdict
 from pymongo.errors import BulkWriteError
 from mongoengine import signals  # from blinker import signal
-from bson import json_util
 from queue import Queue
-# import marshmallow_mongoengine as ma
-import multiprocessing
 import mongoengine as me
 import asyncio
 import logging
 import requests
 import json
-import uuid
 import re
 
 
@@ -61,7 +57,11 @@ class ScenicSpotInfo(me.Document):
     meta = {
         'auto_create_index': True,
         'collection': 'scenic_spot_info',
-        'indexes': [{'fields': ['Id'], 'unique': True}]
+        'indexes': [
+                {'fields': ['Id', 'Name'], 'unique': True},
+                {'fields': ['Toldescribe', 'Ticketinfo', 'Travellinginfo', 'Add', 'Region'], 'unique': False},
+                [("Location", "2d")] 
+            ]
     }
 
     def __repr__(self):
@@ -73,7 +73,8 @@ class ScenicSpotInfo(me.Document):
     @classmethod
     def get(cls, args:dict):
         args = defaultdict(lambda: None, args)
-        only_fields = ['Id', 'Name', 'Toldescribe', 'Description', 'Tel', 'Add', 'Zipcode', 'Region', 'Town', 'Travellinginfo', 'Opentime', 'Picture1', 'Picdescribe1', 'Map', 'Gov', 'Orgclass', 'Ticketinfo', 'Remarks', 'Keyword', 'Location']
+        # only_fields = ['Id', 'Name', 'Toldescribe', 'Description', 'Tel', 'Add', 'Region', 'Town', 'Travellinginfo', 'Opentime', 'Picture1', 'Picdescribe1', 'Ticketinfo', 'Keyword', 'Location']
+        only_fields = ['Id','Name', 'Toldescribe', 'Add', 'Tel', 'Location']
         raw_query = {
             'Name': args['Name'],
             'Id': args['Id'],
@@ -92,7 +93,7 @@ class ScenicSpotInfo(me.Document):
         query = dict(filter(lambda item: item[1] is not None or False, raw_query.items()))
         if(cls.objects.count() == 0):
             cls.insert_all()
-        q_set_json = cls.objects(**query).only(*only_fields).to_json()
+        q_set_json = cls.objects(**query).only(*only_fields).exclude('id').to_json()
         return json.loads(q_set_json)
     
     @classmethod
@@ -135,6 +136,7 @@ class CILocation(me.Document):
         'collection': 'ci_location',
         'indexes': [
             {'fields': ['_iot_selfLink'], 'unique': True}, 
+            {'fields': ['station'], 'unique': False}, 
             [("location", "2dsphere")] 
         ]
     }
@@ -145,7 +147,7 @@ class CILocation(me.Document):
         super(CILocation, self).__init__(*args, **kwargs)
     
     @classmethod
-    def get(cls, args:dict) -> dict:
+    def get(cls, args:dict, result_limit=1) -> dict:
         args = defaultdict(lambda: None, args)
         raw_query = {
             'station__icontains': args['Station'],
@@ -156,7 +158,7 @@ class CILocation(me.Document):
         }
 
         query = dict(filter(lambda item: item[1] is not None or False, raw_query.items()))
-        q_set_json = cls.objects(**query).to_json()
+        q_set_json = cls.objects(**query).limit(result_limit).to_json()
         return json.loads(q_set_json)
 
     @classmethod
@@ -197,7 +199,8 @@ class Observation(me.EmbeddedDocument):
         'auto_create_index': True,
         'collection': 'ci_observation',
         'indexes': [
-            {'fields': ['_iot_selfLink', 'phenomenonTime', 'resultTime'], 'unique': True}
+            {'fields': ['_iot_selfLink', 'phenomenonTime', 'resultTime'], 'unique': True},
+            
         ]
     }
 
@@ -230,7 +233,6 @@ class Datastream(me.Document):
     _iot_id = me.IntField()
     _iot_selfLink = me.StringField()
     Location = me.GeoPointField()
-    # loc_refer = me.ReferenceField(CILocation)
     loc_refer = me.ReferenceField(CILocation, dbref=True)
     ObservatoryName = me.StringField()
 
@@ -239,6 +241,7 @@ class Datastream(me.Document):
         'collection': 'ci_datastream',
         'indexes': [
             {'fields': ['_iot_selfLink'], 'unique': True},
+            {'fields': ['name'], 'unique': False},
             [("Location", "2dsphere")] 
         ]
     }
@@ -288,20 +291,6 @@ class Datastream(me.Document):
         if '@iot.nextLink' in data_content:
             cls.insert_all(station, location, url=data_content['@iot.nextLink'])
 
-        # for i in range(len(raw_args[Inside])):
-        #     t = threading.Thread(target=job,args=({Inside: raw_args[Inside][i]},q))
-        #     t.start()
-        #     threads.append(t)
-        # for thread in threads:
-        #     thread.join()
-        # for _ in range(len(raw_args[Inside])):
-        #     result_list.append(q.get())
-        
-        query = {
-            # 'name__icontains': 'NOW',
-            'station': station,
-            'Location__near': tuple(map(float, location.split(',')))
-        }
         pipeline = [
             {
                 "$match": {
@@ -351,9 +340,7 @@ class Datastream(me.Document):
                 } 
             }
         ] 
-        # a = list(cls.objects().aggregate(pipeline))
         return list(cls.objects().aggregate(pipeline))
-        # return json.loads(cls.objects(**query).only(*only_fields).to_json())
 
     @classmethod
     def insert_all_by_loc(cls, station:str, location:str, **kwargs):
@@ -388,25 +375,5 @@ class Datastream(me.Document):
         if '@iot.nextLink' in data_content:
             cls.insert_all(station, location, url=data_content['@iot.nextLink'])
         return json.loads(cls.objects.all().to_json())
-
-    @classmethod
-    def get(cls, args:dict):
-        args = defaultdict(lambda: None, args)
-        raw_query = {
-            'Name': args['Name'], # ELEV, RAIN, MIN_10, HOUR_3, HOUR_6, HOUR_12, HOUR_24, NOW
-            'Toldescribe__icontains': args['Keyword'],
-            'Ticketinfo__icontains': args['Ticketinfo'],
-            'Travellinginfo__icontains': args['Travellinginfo'],
-            'Add__icontains': args['Add'],
-            # 'Location__geo_within_center': [args['Location'].split(','), args['Distance']] if args['Location'] and args['Distance'] else None,
-            # 'Location__geo_within_sphere': [args['Location'].split(','), args['Distance']] if args['Location'] and args['Distance'] else None
-            'Location__near': list(map(float, args['Location'].split(','))) if isinstance(args['Location'], str) else None,
-            'Location__max_distance': float(args['Distance']) if isinstance(args['Distance'], str) and isinstance(args['Location'], str) else 0
-            # 'Location__near': list(map(float, args['Location'].split(','))) if 'Location' in args else None,
-            # 'Location__max_distance': float(args['Distance']) if 'Distance' in args and 'Location' in args else None
-        }
-        query = dict(filter(lambda item: item[1] is not None or False, raw_query.items()))
-        q_set_json = cls.objects(**query).to_json()
-        return json.loads(q_set_json)
 
 # signals.pre_init.connect(Observation.pre_init, sender=Observation)

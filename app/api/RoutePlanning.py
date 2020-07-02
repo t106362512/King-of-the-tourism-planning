@@ -27,14 +27,6 @@ class RoutePlanning(Resource):
 
     def post(self, **kwargs):
         # pylint: disable=no-member
-        # import pdb; pdb.set_trace()
-        print('======================================')
-
-        data = request.form
-        print('data')
-        print(data)
-
-        print('--------------------------------------')
         parser = reqparse.RequestParser()
         parser.add_argument('Location', default=None, type=str, action='append',
                             help='plz type like the ["121.297187,24.943325"]')
@@ -47,10 +39,6 @@ class RoutePlanning(Resource):
         
         if(raw_args['Id'] == None and raw_args['Id[]'] != None ):
             raw_args['Id'] = raw_args['Id[]']
-
-        print('raw_args')
-        print(raw_args)
-        print('======================================')
 
         Inside = 'Location' if raw_args['Location'] else 'Id'
         stations = ['STA_AirQuality_v2', 'STA_Rain']

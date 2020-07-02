@@ -113,15 +113,21 @@
 			$('#left_selected_num').text(10-Object.keys(selected_obj).length);
 
 			var myTable = $('#datatable').DataTable( {
-				"processing": true,
+				//"processing": true,
+				"bProcessing": true,
+				"bServerSide": true,
+				"sPaginationType": "full_numbers",
+				"bjQueryUI": true,
+				"sAjaxSource": "{{ url_for('api.scenice') | safe}}",
 				lengthMenu: [[10, 25, 50, 75, 100, -1], [10, 25, 50, 75, 100, 'All']],
 				"rowId": "Id",
-				"ajax": {
-					"url": "{{ url_for('api.scenice', Location='120.5825975,23.583234', Distance='2.5') | safe}}",
-					"data": function ( d ) {
-						d.extra_search = $('#extra').val();
-					}
-				},
+				//"ajax": {
+					// "url": "{{ url_for('api.scenice', Location='121.2977,24.9433', Distance='0.06') | safe}}",
+				//	"url": "{{ url_for('api.scenice', Location='120.5825975,23.583234', Distance='2.5') | safe}}",
+				//	"data": function ( d ) {
+				//		d.extra_search = $('#extra').val();
+				//	}
+				//},
 				oLanguage: {
 					"sLengthMenu": "每頁顯示 _MENU_ 條",
 					// "sProcessing": "<img src='" + imgUrl + "'/><span>&nbsp;&nbsp;Loading...</span>",
