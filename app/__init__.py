@@ -21,6 +21,7 @@ def create_app(config_name='development'):
     app = Flask(__name__)
     app.config["MONGODB_SETTINGS"] = {'DB': os.getenv('MONGODB_DB'), 'host': os.getenv('MONGODB_CONNECTIONSTRING')}
     app.jinja_env.globals['MAPBOX_API_KEY'] = os.getenv('MAPBOX_API_KEY')
+    app.jinja_env.globals['GOOGLE_PLACES_API_KEY'] = os.getenv('GOOGLE_PLACES_API_KEY')
     api = Api(app)
     db.init_app(app)
     cache.init_app(app)

@@ -2,15 +2,8 @@
 from app.resource.RoutePlanning import RoutePlanning as RP
 from app.models.model import ScenicSpotInfo, CILocation, Datastream
 from flask_restful import Resource, reqparse
-import requests
-import json
-import re
 import threading
-import time
 from queue import Queue
-import asyncio
-import json
-from flask import request
 
 class RoutePlanning(Resource):
 
@@ -61,16 +54,21 @@ class RoutePlanning(Resource):
                     sta, ','.join(map(str, loc_array)))
                 info_dict[sta] = sta_info
             q.put(info_dict)
+            
 
-        for i in range(len(raw_args[Inside])):
+        for raw_arg in raw_args[Inside]:
             t = threading.Thread(target=job, args=(
-                {Inside: raw_args[Inside][i]}, q))
+                {Inside: raw_arg}, q))
             t.start()
             threads.append(t)
+
         for thread in threads:
             thread.join()
-        for _ in range(len(raw_args[Inside])):
+            
+        for _ in raw_args[Inside]:
+            
             result_list.append(q.get())
+            # print('Name: {}, Id: {}'.format(a['ScenicSpotInfo'][0]['Name'], a['ScenicSpotInfo'][0]['Id']))
 
         # while raw_args[Inside]:
         #     args = {Inside: raw_args[Inside].pop()}

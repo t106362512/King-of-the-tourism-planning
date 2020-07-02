@@ -32,14 +32,13 @@ class TSPMatrix():
                     # if element['status'] == 'OK':
                     el_list.append(element[mode]['value'])
                 self.matrix.append(el_list)
-            pprint(self.matrix)
+            # pprint(self.matrix)
         return self
 
 class TSP(TSPMatrix):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        print("Enjoy the Algorithm!!!")
 
     def normal_ans(self, start=0, **kwargs):
 

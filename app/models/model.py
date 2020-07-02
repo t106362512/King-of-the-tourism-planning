@@ -199,8 +199,7 @@ class Observation(me.EmbeddedDocument):
         'auto_create_index': True,
         'collection': 'ci_observation',
         'indexes': [
-            {'fields': ['_iot_selfLink', 'phenomenonTime', 'resultTime'], 'unique': True},
-            
+            {'fields': ['_iot_selfLink', 'phenomenonTime', 'resultTime'], 'unique': True}
         ]
     }
 
@@ -279,7 +278,7 @@ class Datastream(me.Document):
             ci_datastream_model_mod.pop('Observations')
             bulk.find({ "_iot_selfLink": ci_datastream_model['_iot_selfLink'] }).upsert().update_one({'$set':ci_datastream_model_mod})
             for obs in obss:
-                print(obs)
+                # print(obs)
                 bulk.find({"_iot_selfLink": ci_datastream_model['_iot_selfLink']}).upsert().update_one({'$addToSet':{'Observations': obs}})
 
         try:

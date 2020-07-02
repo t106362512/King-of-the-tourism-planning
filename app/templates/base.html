@@ -1,93 +1,152 @@
-
+<!DOCTYPE html>
 <html>
 
-    <head>
-        <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no">
-        <link rel="icon" type="image/ico" href="{{url_for('static', filename='images/favicon.ico')}}">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, user-scalable=no">
 
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
-        <!-- Custom fonts for this template-->
-        <link href="{{url_for('static', filename='vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
-        <link
-            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <!-- Custom fonts for this template-->
+    <link href="{{url_for('static', filename='vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet"
+        type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
-        <!-- Custom styles for this template-->
-        <link href="{{url_for('static', filename='vendor/css/sb-admin-2.min.css')}}" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="{{url_for('static', filename='vendor/css/sb-admin-2.min.css')}}" rel="stylesheet">
 
-        <title>BASE</title>
+    <title>Computer Algorithm Project</title>
 
-        {% block PageCustomStyles %}
-        {% endblock %}
+    {% block PageCustomStyles %}
+    {% endblock %}
 
-    </head>
+</head>
 
-    <body id="page-top">
+<body id="page-top">
 
-        <!-- Page Wrapper -->
-        <div id="wrapper">
-            
-            <!-- Content Wrapper -->
-            <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
 
-                <!-- Main Content -->
-                <div id="content">
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
 
-                    <!-- Topbar -->
-                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+            <!-- Main Content -->
+            <div id="content">
 
-                        <!-- Topbar Navbar -->
-                        <ul class="navbar-nav ml-auto">
-                            <li class="nav-item active">
-                            <a class="nav-link" href="">Info <span class="sr-only">(current)</span></a>
-                            </li>
-                        </ul>
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                    </nav>
-                    <!-- End of Topbar -->
+                    <!-- .navbar-brand 左上LOGO位置 -->
+                    <a class="navbar-brand">
+                        <span class="h3 mx-1">旅遊規劃王</span>
+                    </a>
 
-                    {% block content %}
-                    {% endblock %}
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" data-toggle="modal" data-target="#infoModal" href="#infoModal">Info
+                                <span class="sr-only">(current)</span></a>
+                        </li>
+                    </ul>
 
-                </div>
-                <!-- End of Main Content -->
+                </nav>
+                <!-- End of Topbar -->
 
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2020</span>
-                        </div>
-                    </div>
-                </footer>
-                <!-- End of Footer -->
+                {% block content %}
+                {% endblock %}
 
             </div>
-            <!-- End of Content Wrapper -->
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; 2020 NTUT</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
 
         </div>
-        <!-- End of Page Wrapper -->
+        <!-- End of Content Wrapper -->
 
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
+    </div>
+    <!-- End of Page Wrapper -->
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="{{url_for('static', filename='vendor/jquery/jquery.min.js')}}"></script>
-        <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
-        <!-- Core plugin JavaScript-->
-        <script src="{{url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js')}}"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="{{url_for('static', filename='vendor/js/sb-admin-2.min.js')}}"></script>
+    <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">系統資訊</h4>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
 
-        {% block PageCustomScripts %}
-        {% endblock %}
+                <div id="info_modal-body" class="modal-body">
 
-        {% block content_test %}
-        {% endblock %}
-    </body>
+                    <div class="form-group">
+                        <h5>國立台北科技大學 108 學年度 第一學期</h5>
+                        <h6>計算機演算法期末專案</h6>
+                    </div>
+
+                    <div class="form-group">
+                        <h6 class="list-heading">成員：</h6>
+                        <ul>
+                            <li>106362501 簡浩庭</li>
+                            <li>106362505 何宗龍</li>
+                            <li>106362512 王志嘉</li>
+                        </ul>
+                        <h6 class="list-heading">資料來源：</h6>
+                        <ul>
+                            <li><a href="https://ci.taiwan.gov.tw/dsp/environmental.aspx" target="_blank">民生公務物聯網</a>
+                            </li>
+                            <li><a href="https://ci.taiwan.gov.tw/dsp/environmental_cwb_rain.aspx"
+                                    target="_blank">民生公務物聯網-中央氣象局-雨量站</a>
+                            </li>
+                            <li><a href="https://ci.taiwan.gov.tw/dsp/environmental_air_epa.aspx"
+                                    target="_blank">民生公務物聯網-環保署-國家空品測站監測資料</a>
+                            </li>
+                            <li><a href="https://data.gov.tw/dataset/7777" target="_blank">景點 - 觀光資訊資料庫</a></li>
+                            <li><a href="https://developers.google.com/maps/documentation" target="_blank">Google map
+                                    API</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- <p>
+                        目前使用TSP做景點流程安排
+                    </p> -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="{{url_for('static', filename='vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="{{url_for('static', filename='vendor/jquery-easing/jquery.easing.min.js')}}"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="{{url_for('static', filename='vendor/js/sb-admin-2.min.js')}}"></script>
+
+
+
+    {% block PageCustomScripts %}
+    {% endblock %}
+
+    {% block content_test %}
+    {% endblock %}
+</body>
 
 </html>

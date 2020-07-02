@@ -43,22 +43,30 @@
 
 				<div class="card-body">
 
-					<div class="table-responsive">
-
-						<table class="table table-striped table-bordered table-sm" id="datatable" width="100%"
-							cellspacing="0">
-							<thead>
-								<tr>
-									{% for col in columns %}
-									<th>{{ col }}</th>
-									{% endfor %}
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-						</table>
-
+					<div class="form-group">
+						<h4>預計總里程：<span id="total_length">N/A</span> 公尺</h4>
 					</div>
+					<div class="form-group">
+						<div class="table-responsive">
+
+							<table class="table table-striped table-bordered table-sm" id="datatable" width="100%"
+								cellspacing="0">
+								<thead>
+									<tr>
+										{% for col in columns %}
+										<th>{{ col }}</th>
+										{% endfor %}
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+	
+						</div>
+					</div>
+
+
+
 				</div>
 
 			</div>
@@ -93,7 +101,7 @@
 
 {% block PageCustomScripts %}
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcnZRtkbHg4X80RTTQSz60a2SvqmBitp8&callback=initMap" defer></script>
+<script src="{{'https://maps.googleapis.com/maps/api/js?key={0}&callback=initMap'.format(GOOGLE_PLACES_API_KEY) | safe}}" defer></script>
 <script>
 	console.log('mapping_paths min_mapping_path_list');
 	var mapping_paths = {{mapping_paths|tojson|safe}};
@@ -116,7 +124,7 @@
 	console.log('length min_path_length');
 	var min_path_length = {{length|safe}};
 	console.log(min_path_length);
-
+	$('#total_length').text(min_path_length);
 
 	var map;
 	var directionsService;
