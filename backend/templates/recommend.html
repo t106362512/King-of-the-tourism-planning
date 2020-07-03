@@ -166,8 +166,8 @@
 
 	$(document).ready(function () {
 
-		// https://50aabc6d-45ac-45e3-bcc4-c8c53cd2d7c0.mock.pstmn.io/api/RoutePlanning
-
+		// 雨量對應object
+		// 未來將改到後端
 		var columnTypes = {
 			"HOUR_3": { "Rain": true, "Name": "3小時累積雨量", "Symbol": "mm" },
 			"HOUR_6": { "Rain": true, "Name": "6小時累積雨量", "Symbol": "mm" },
@@ -179,6 +179,8 @@
 			"ELEV": { "Rain": false, "Name": "觀測海拔", "Symbol": "m" }
 		};
 
+		// 空氣品質等級
+		// 未完成
 		var standard = {
 			"ThermalIndex": {},
 			"AirQuality": [
@@ -191,12 +193,11 @@
 			]
 		};
 
+		// 渲染 Datatable ，塞入 後端運算完的順序資料
 		var myTable = $('#datatable').DataTable({
 			dom: '<<t>i>',
 			"processing": true,
 			"ajax": {
-				// "url": 'https://50aabc6d-45ac-45e3-bcc4-c8c53cd2d7c0.mock.pstmn.io/api/RoutePlanning',
-				// "type": "POST"
 				url: "{{ url_for('api.RoutePlanning') | safe}}",
 				type: 'POST',
 				data: { Id: mapping_paths }
@@ -209,6 +210,7 @@
 					placement: 'auto'
 				});
 
+				// 利用 Google map Javascript API 劃出路線及標示地點
 				var api_rows_data = this.api().rows().data();
 				// console.log(api_rows_data);
 				if (api_rows_data.length > 0) {
@@ -230,7 +232,6 @@
 						if (filter_Id.length == 1) {
 							Name = filter_Id[0]['ScenicSpotInfo'][0].Name;
 						}
-
 
 						var infowindow = new google.maps.InfoWindow({
 							content: Name
@@ -278,11 +279,9 @@
 					orderable: false,
 					data: null,
 					render: function (data, type, row, meta) {
-						// 因為後端回傳的順序並不是按照傳入的順序，所以需要給index排序
+						// 因為後端回傳的順序並不是按照傳入的順序，所以需要給index，讓Datatable根據欄位value排序
 						Id = data['ScenicSpotInfo'][0]['Id'];
-						order = mapping_paths.indexOf(Id)
-						// console.log(order);
-						// console.log(data['ScenicSpotInfo'][0]['Name']);
+						order = mapping_paths.indexOf(Id);
 						return ++order;
 					}
 				},

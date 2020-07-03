@@ -20,6 +20,7 @@
 
 	<div class="row">
 
+		<!-- 左側目前已選擇列表 -->
 		<div class="col-sm-3">
 			<!-- Content Row -->
 			<div id="selected_card" class="card shadow mb-4">
@@ -63,6 +64,7 @@
 			</div>
 		</div>
 
+		<!-- 列出所有景點 -->
 		<div class="col-sm-9">
 			<!-- DataTales Example -->
 			<div class="card shadow mb-4">
@@ -111,15 +113,18 @@
 	$(document).ready(function () {
 		var selected_obj = {};
 
+		// 目前選擇數量及剩餘數量
 		$('#selected_num').text(Object.keys(selected_obj).length);
 		$('#left_selected_num').text(10 - Object.keys(selected_obj).length);
 
+		// 渲覽Datatable
 		var myTable = $('#datatable').DataTable({
 			"processing": true,
 			"pageLength": 25,
 			lengthMenu: [[10, 25, 50, 75, 100, -1], [10, 25, 50, 75, 100, 'All']],
 			"rowId": "Id",
 			"ajax": {
+				// 向後端Route 送API要資料
 				"url": "{{ url_for('api.scenice') | safe}}",
 				"data": function (d) {
 					d.extra_search = $('#extra').val();
@@ -144,6 +149,7 @@
 				"sSearch": "搜尋：",
 			},
 			"drawCallback": function (oSettings) {
+				// 載入資料後 渲染
 				$('[data-toggle="popover"]').popover({
 					html: true,
 					trigger: 'focus',
@@ -214,11 +220,13 @@
 
 		});
 
+		// 讓左側選單能跟著滾動
 		$(window).scroll(function () {
 			var newPos = $(document).scrollTop();
 			$('#selected_card').css({ top: newPos });
 		});
 
+		// submit 前的event check
 		$('#form_selected').submit(function (event) {
 			console.log(event);
 			console.log('submit');
