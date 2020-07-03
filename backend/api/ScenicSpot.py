@@ -1,12 +1,21 @@
 from backend.models.model import ScenicSpotInfo
 from flask_restful import Resource, reqparse
+from flask import request
 from backend import cache
+import urllib
 import json
+
+def cache_key():
+    args = request.args
+    key = request.path + '?' + urllib.parse.urlencode([(k, v) for k in sorted(args) if k != '_' for v in sorted(args.getlist(k))])
+    print(key)
+    return key
 
 class ScenicSpot(Resource):
 
-    @cache.cached(timeout=604800)
-    def get(self):
+    @cache.cached(timeout=604800,  key_prefix=cache_key)
+    # @cache.cached(timeout=604800)
+    def get(self, **kwargs):
         parser = reqparse.RequestParser()
         parser.add_argument('Name', type=str, default=None)
         parser.add_argument('Keyword', type=str, default=None)
