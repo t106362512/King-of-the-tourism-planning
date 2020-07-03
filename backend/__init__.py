@@ -3,28 +3,29 @@ from flask_restful import Api
 from flask_caching import Cache
 from flask_mongoengine import MongoEngine
 from flask_cors import CORS
-# from backend.api.datatable_server_side.ScenicSpot import ScenicSpot
-from backend.api.ScenicSpot import ScenicSpot
-from backend.api.STAIOT import STALoc
-from backend.api.RoutePlanning import RoutePlanning
-from backend.views.demo import demo
-from backend.views.datatable import datable
-from backend.views.RoutePlanning import RoutePlanning_bp
 import os
 
-db = MongoEngine()
-cache = Cache(config={'CACHE_TYPE': 'simple'})
+me = MongoEngine()
+cache = Cache()
 
 def create_app(config_name='development'):
     # pylint: disable=no-member
+
+    from backend.api.ScenicSpot import ScenicSpot
+    from backend.api.STAIOT import STALoc
+    from backend.api.RoutePlanning import RoutePlanning
+    # from backend.api.datatable_server_side.ScenicSpot import ScenicSpot
+    from backend.views.demo import demo
+    from backend.views.datatable import datable
+    from backend.views.RoutePlanning import RoutePlanning_bp
 
     app = Flask(__name__)
     app.config["MONGODB_SETTINGS"] = {'DB': os.getenv('MONGODB_DB'), 'host': os.getenv('MONGODB_CONNECTIONSTRING')}
     app.jinja_env.globals['MAPBOX_API_KEY'] = os.getenv('MAPBOX_API_KEY')
     app.jinja_env.globals['GOOGLE_PLACES_API_KEY'] = os.getenv('GOOGLE_PLACES_API_KEY')
     api = Api(app)
-    db.init_app(app)
-    cache.init_app(app)
+    me.init_app(app)
+    cache.init_app(app, config={'CACHE_TYPE': 'simple'})
     api.add_resource(ScenicSpot, '/api/scenice', endpoint='api.scenice') # end point for jinja2 url_for using
     api.add_resource(STALoc, '/api/location', endpoint='api.stalocation')
     api.add_resource(RoutePlanning, '/api/RoutePlanning', endpoint='api.RoutePlanning')

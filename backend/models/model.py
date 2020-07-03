@@ -2,8 +2,9 @@
 from collections import defaultdict
 from pymongo.errors import BulkWriteError
 from mongoengine import signals  # from blinker import signal
+from backend import me
 from queue import Queue
-import mongoengine as me
+# import mongoengine as me
 import asyncio
 import logging
 import requests

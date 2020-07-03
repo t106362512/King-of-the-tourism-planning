@@ -1,11 +1,11 @@
 from backend.models.model import ScenicSpotInfo
 from flask_restful import Resource, reqparse
-# from backend import cache
+from backend import cache
 import json
 
 class ScenicSpot(Resource):
 
-    # @cache.cached(timeout=604800)
+    @cache.cached(timeout=604800)
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('Name', type=str, default=None)
@@ -35,12 +35,12 @@ class ScenicSpot(Resource):
         result = result_dict
         return {'data': result}
 
-    # @cache.clear()
     def put(self):
+        cache.clear() 
         result = ScenicSpotInfo.insert_all()
         return {'data': result}
 
-    # @cache.clear()
     def delete(self):
+        cache.clear()
         result = {'collection': ScenicSpotInfo.delete(), 'status': "successed"}
         return {'data': result}
