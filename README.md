@@ -55,11 +55,11 @@
 
 - 前端應用組件與模板框架
   - HTML
-    - CSS
-    - JavaScript
-    - jQuery
-    - Datatable
-    - Bootstrap
+  - CSS
+  - JavaScript
+  - jQuery
+  - Datatable
+  - Bootstrap
 - 後端處理之程式語言
   - Python
 - 後端框架與模板引擎
